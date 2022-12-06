@@ -1,6 +1,6 @@
 package com.CoffeControl.backend.controller;
 
-import com.CoffeControl.backend.model.Storage;
+import com.CoffeControl.backend.dto.StorageDto;
 import com.CoffeControl.backend.service.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,7 +17,7 @@ public class StorageController {
 
 
     @GetMapping
-    public Page<Storage> list(@RequestParam(required = false,defaultValue = "0") Integer page, @RequestParam(required = false,defaultValue = "10") Integer limit) {
+    public Page<StorageDto> list(@RequestParam(required = false,defaultValue = "0") Integer page, @RequestParam(required = false,defaultValue = "10") Integer limit) {
         return storageService.list(page,limit);
     }
 }

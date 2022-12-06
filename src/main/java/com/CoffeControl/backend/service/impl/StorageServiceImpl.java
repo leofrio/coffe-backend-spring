@@ -1,5 +1,7 @@
 package com.CoffeControl.backend.service.impl;
 
+import com.CoffeControl.backend.dto.StorageDto;
+import com.CoffeControl.backend.form.ProductPostForm;
 import com.CoffeControl.backend.model.Product;
 import com.CoffeControl.backend.model.Storage;
 import com.CoffeControl.backend.repository.StorageRepositoy;
@@ -21,17 +23,17 @@ public class StorageServiceImpl implements StorageService {
     private StorageRepositoy storageRepositoy;
 
     @Override
-    public Page<Storage> list(Integer page, Integer limit) {
+    public Page<StorageDto> list(Integer page, Integer limit) {
         Pageable pagination= PageRequest.of(page,limit);
         Page<Storage> storage = storageRepositoy.findAll(pagination);
-        return storage;
+        return StorageDto.convert(storage);
     }
 
     @Override
-    public ResponseEntity<Storage> insertNewProduct(Product p, UriComponentsBuilder uriBuilder) {
-        Storage storage =new Storage(p);
+    public ResponseEntity<Storage> insertNewProduct(Product p, ProductPostForm form, UriComponentsBuilder uriBuilder) {
+        Storage storage =new Storage(p,form);
         storageRepositoy.save(storage);
         URI uri= uriBuilder.path("storage/{id}").buildAndExpand(storage.getId()).toUri();
-        return ResponseEntity.created(uri).body(new Storage(p));
+        return ResponseEntity.created(uri).body(storage);
     }
 }

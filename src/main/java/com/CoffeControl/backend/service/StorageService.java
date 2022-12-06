@@ -1,5 +1,7 @@
 package com.CoffeControl.backend.service;
 
+import com.CoffeControl.backend.dto.StorageDto;
+import com.CoffeControl.backend.form.ProductPostForm;
 import com.CoffeControl.backend.model.Product;
 import com.CoffeControl.backend.model.Storage;
 import org.springframework.data.domain.Page;
@@ -9,6 +11,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 @Service
 public interface StorageService {
-    Page<Storage> list(Integer page, Integer limit);
-    public ResponseEntity<Storage> insertNewProduct(Product p, UriComponentsBuilder uriBuilder);
+    public Page<StorageDto> list(Integer page, Integer limit);
+    public ResponseEntity<Storage> insertNewProduct(Product p, ProductPostForm form, UriComponentsBuilder uriBuilder);
 }

@@ -1,5 +1,6 @@
 package com.CoffeControl.backend.model;
 
+import com.CoffeControl.backend.form.ProductPostForm;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,14 +18,14 @@ public class Storage {
     private Product product;
     @Getter @Setter
     @Column(name = "current_amount")
-    private Integer currentAmount;
+    private Integer currentAmount=0;
     @Getter @Setter
     @Column(name = "min_amount")
-    private Integer minAmount;
+    private Integer minAmount=0;
 
-    public Storage(Product p) {
+    public Storage(Product p, ProductPostForm form) {
         this.product = p;
-        this.minAmount=0;
-        this.currentAmount = 0;
+        this.minAmount=form.getMinAmount();
+        this.currentAmount = form.getCurrentAmount();
     }
 }

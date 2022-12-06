@@ -36,7 +36,7 @@ public class ProductServiceImpl implements ProductService {
     public ResponseEntity<ProductDto> register(ProductPostForm form, UriComponentsBuilder uriBuilder) {
         Product product =new Product(form);
         product=productRepository.save(product);
-        storageService.insertNewProduct(product,UriComponentsBuilder.newInstance());
+        storageService.insertNewProduct(product,form,UriComponentsBuilder.newInstance());
         URI uri= uriBuilder.path("products/{id}").buildAndExpand(product.getId()).toUri();
         return ResponseEntity.created(uri).body(new ProductDto(product));
     }
