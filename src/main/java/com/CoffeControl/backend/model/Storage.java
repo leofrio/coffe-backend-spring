@@ -23,7 +23,7 @@ public class Storage {
     private Integer minAmount;
 
     public Storage(Product p) {
-        this.product = product;
+        this.product = p;
         this.minAmount=0;
         this.currentAmount = 0;
     }
