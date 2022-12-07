@@ -1,14 +1,14 @@
 package com.CoffeControl.backend.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.ArrayList;
 import java.util.List;
-
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Entity(name = "users")
 @NoArgsConstructor
 public class User {
@@ -26,14 +26,14 @@ public class User {
     private String password;
     @Getter @Setter
     @OneToMany(mappedBy = "assignedUser")
-    private List<Solicitation> solicitations=new ArrayList<>();
+    private List<Solicitation> solicitations;
     @Getter @Setter
     @OneToMany(mappedBy = "user")
-    private List<Contribution> contributions=new ArrayList<>();
+    private List<Contribution> contributions;
     @Getter @Setter
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     @JoinTable(name="user_profile", joinColumns=
             {@JoinColumn(name="profile_id")}, inverseJoinColumns=
             {@JoinColumn(name="user_id")})
-    private List<Profile> profiles = new ArrayList<>();
+    private List<Profile> profiles;
 }

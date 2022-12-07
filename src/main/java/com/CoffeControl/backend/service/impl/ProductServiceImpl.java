@@ -55,7 +55,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductDto enable(Integer id,UriComponentsBuilder uriBuilder) throws Exception {
+    public ProductDto enable(Integer id) throws Exception {
         Product product = productRepository.findById(id).orElseThrow(() -> new Exception("product not found"));
         product.setEnabled(true);
         productRepository.save(product);
@@ -63,7 +63,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductDto disable(Integer id, UriComponentsBuilder uriBuilder) throws Exception {
+    public ProductDto disable(Integer id) throws Exception {
         Product product = productRepository.findById(id).orElseThrow(() -> new Exception("product not found"));
         product.setEnabled(false);
         productRepository.save(product);

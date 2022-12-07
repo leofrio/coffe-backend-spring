@@ -1,15 +1,15 @@
 package com.CoffeControl.backend.model;
 
 import com.CoffeControl.backend.form.ProductPostForm;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.ArrayList;
 import java.util.List;
 
-
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Entity(name = "products")
 @NoArgsConstructor
 public class Product {
@@ -27,17 +27,17 @@ public class Product {
     private Integer minUserAmount;
     @Getter @Setter
     private Boolean enabled;
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     @JoinTable(name="contribution_product", joinColumns=
             {@JoinColumn(name="contribution_id")}, inverseJoinColumns=
             {@JoinColumn(name="product_id")})
-    private List<Contribution> contributions = new ArrayList<>();
+    private List<Contribution> contributions;
     @Getter @Setter
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     @JoinTable(name="solicitation_product", joinColumns=
             {@JoinColumn(name="solicitation_id")}, inverseJoinColumns=
             {@JoinColumn(name="product_id")})
-    private List<Solicitation> solicitations = new ArrayList<>();
+    private List<Solicitation> solicitations;
 
     public Product(ProductPostForm form) {
         this.name = form.getName();

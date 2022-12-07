@@ -1,7 +1,9 @@
 package com.CoffeControl.backend.service.impl;
 
+import com.CoffeControl.backend.dto.StorageDetailedDto;
 import com.CoffeControl.backend.dto.StorageDto;
 import com.CoffeControl.backend.form.ProductPostForm;
+import com.CoffeControl.backend.form.StorageUpdateQuantityForm;
 import com.CoffeControl.backend.model.Product;
 import com.CoffeControl.backend.model.Storage;
 import com.CoffeControl.backend.repository.StorageRepositoy;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.util.Optional;
 
 @Service
 public class StorageServiceImpl implements StorageService {
@@ -35,5 +38,33 @@ public class StorageServiceImpl implements StorageService {
         storageRepositoy.save(storage);
         URI uri= uriBuilder.path("storage/{id}").buildAndExpand(storage.getId()).toUri();
         return ResponseEntity.created(uri).body(storage);
+    }
+
+    @Override
+    public StorageDto updateQuantity(Integer id, StorageUpdateQuantityForm form) throws Exception {
+        Storage storage=storageRepositoy.findById(id).orElseThrow(() -> new Exception("storage id not found"));
+        storage.setCurrentAmount(form.getQtd());
+        storageRepositoy.save(storage);
+        return new StorageDto(storage);
+    }
+
+    @Override
+    public StorageDetailedDto getSpecificStorage(Integer id) throws Exception {
+        Storage storage=storageRepositoy.findById(id).orElseThrow(() -> new Exception("id doesnt represent storage"));
+        return new StorageDetailedDto(storage);
+    }
+
+    @Override
+    public StorageDetailedDto getByProductId(Integer product_id) throws Exception {
+        Optional<Storage> optionalStorage= Optional.of(storageRepositoy.findByProductId(product_id).get(0));
+        Storage storage =optionalStorage.orElseThrow(() ->  new Exception("no product found"));
+        System.out.println("storage :");
+        System.out.println("id :" +storage.getId());
+        System.out.println("current amount :" +storage.getCurrentAmount());
+        System.out.println("min amount :" +storage.getMinAmount());
+        System.out.println("product_id : " +storage.getProduct().getId());
+        System.out.println("product_name: :" +storage.getProduct().getName());
+        System.out.println("product_minUseramount : " +storage.getProduct().getMinUserAmount());
+        return new StorageDetailedDto(storage);
     }
 }

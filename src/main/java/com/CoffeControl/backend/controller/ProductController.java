@@ -31,11 +31,11 @@ public class ProductController {
         return productService.update(id,form);
     }
     @GetMapping("/{id}/enable")
-    public ProductDto enable(@PathVariable("id") Integer id, UriComponentsBuilder uriBuilder) throws Exception{
-        return productService.enable(id,uriBuilder);
+    public ProductDto enable(@PathVariable("id") Integer id) throws Exception{
+        return productService.enable(id);
     }
     @GetMapping("/{id}/disable")
-    public ProductDto disable(@PathVariable("id") Integer id,UriComponentsBuilder uriBuilder) throws Exception{
-        return productService.disable(id,uriBuilder);
+    public ProductDto disable(@PathVariable("id") Integer id) throws Exception{
+        return productService.disable(id);
     }
 }

@@ -1,11 +1,12 @@
 package com.CoffeControl.backend.model;
 
 import com.CoffeControl.backend.form.ProductPostForm;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Entity(name = "product_storage")
 @NoArgsConstructor
 public class Storage {

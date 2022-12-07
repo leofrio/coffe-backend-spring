@@ -16,7 +16,7 @@ public interface ProductService {
 
     ResponseEntity<ProductDto> register(ProductPostForm form, UriComponentsBuilder uriBuilder);
 
-    ProductDto enable(Integer id,UriComponentsBuilder uriBuilder) throws Exception;
+    ProductDto enable(Integer id) throws Exception;
 
-    ProductDto disable(Integer id, UriComponentsBuilder uriBuilder) throws Exception;
+    ProductDto disable(Integer id) throws Exception;
 }
