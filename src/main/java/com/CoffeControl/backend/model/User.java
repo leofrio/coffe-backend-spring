@@ -26,10 +26,10 @@ public class User {
     private String password;
     @Getter @Setter
     @OneToMany(mappedBy = "assignedUser")
-    private List<Solicitation> solicitations;
+    private List<Solicitation> solicitations=new ArrayList<>();
     @Getter @Setter
     @OneToMany(mappedBy = "user")
-    private List<Contribution> contributions;
+    private List<Contribution> contributions=new ArrayList<>();
     @Getter @Setter
     @ManyToMany
     @JoinTable(name="user_profile", joinColumns=

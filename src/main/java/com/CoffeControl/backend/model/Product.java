@@ -26,7 +26,7 @@ public class Product {
     @Column(name = "min_user_amount")
     private Integer minUserAmount;
     @Getter @Setter
-    private boolean enabled;
+    private Boolean enabled;
     @ManyToMany
     @JoinTable(name="contribution_product", joinColumns=
             {@JoinColumn(name="contribution_id")}, inverseJoinColumns=

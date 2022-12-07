@@ -14,8 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class StorageController {
     @Autowired
     private StorageService storageService;
-
-
     @GetMapping
     public Page<StorageDto> list(@RequestParam(required = false,defaultValue = "0") Integer page, @RequestParam(required = false,defaultValue = "10") Integer limit) {
         return storageService.list(page,limit);

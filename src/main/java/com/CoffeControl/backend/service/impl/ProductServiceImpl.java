@@ -2,6 +2,7 @@ package com.CoffeControl.backend.service.impl;
 
 import com.CoffeControl.backend.dto.ProductDto;
 import com.CoffeControl.backend.form.ProductPostForm;
+import com.CoffeControl.backend.form.ProductUpdateForm;
 import com.CoffeControl.backend.model.Product;
 import com.CoffeControl.backend.repository.ProductRepository;
 import com.CoffeControl.backend.repository.StorageRepositoy;
@@ -25,6 +26,18 @@ public class ProductServiceImpl implements ProductService {
     private StorageRepositoy storageRepositoy;
     @Autowired
     private StorageService storageService;
+
+    @Override
+    public ResponseEntity<ProductDto> update(Integer id, ProductUpdateForm form) throws Exception {
+        Product product = productRepository.findById(id).orElseThrow(() -> new Exception("product not found"));
+        product.setName(form.getName() != null ? form.getName() :  product.getName());
+        product.setDescription(form.getDescription() != null ? form.getDescription() :  product.getDescription());
+        product.setEnabled(form.getEnabled() != null ? form.getEnabled() :  product.getEnabled());
+        product.setMinUserAmount(form.getMinUserAmount() != null ? form.getMinUserAmount() :  product.getMinUserAmount());
+        productRepository.save(product);
+        return ResponseEntity.ok(new ProductDto(product));
+    }
+
     @Override
     public Page<ProductDto> list(Integer page, Integer limit) {
         Pageable pagination= PageRequest.of(page,limit);
@@ -39,5 +52,21 @@ public class ProductServiceImpl implements ProductService {
         storageService.insertNewProduct(product,form,UriComponentsBuilder.newInstance());
         URI uri= uriBuilder.path("products/{id}").buildAndExpand(product.getId()).toUri();
         return ResponseEntity.created(uri).body(new ProductDto(product));
+    }
+
+    @Override
+    public ProductDto enable(Integer id,UriComponentsBuilder uriBuilder) throws Exception {
+        Product product = productRepository.findById(id).orElseThrow(() -> new Exception("product not found"));
+        product.setEnabled(true);
+        productRepository.save(product);
+        return new ProductDto(product);
+    }
+
+    @Override
+    public ProductDto disable(Integer id, UriComponentsBuilder uriBuilder) throws Exception {
+        Product product = productRepository.findById(id).orElseThrow(() -> new Exception("product not found"));
+        product.setEnabled(false);
+        productRepository.save(product);
+        return new ProductDto(product);
     }
 }
