@@ -1,6 +1,8 @@
 package com.CoffeControl.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,8 +27,11 @@ public class Solicitation {
     @Getter @Setter
     @ManyToOne
     @JoinColumn(name = "assigned_user_id")
+    @JsonBackReference
     private User assignedUser;
     @Getter @Setter
     @OneToMany(mappedBy = "solicitation")
+    @JsonManagedReference
     private List<Contribution> contributions;
+
 }

@@ -1,7 +1,9 @@
 package com.CoffeControl.backend.model;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,12 +27,15 @@ public class User {
     @Column(name = "pword")
     private String password;
     @Getter @Setter
+    @JsonManagedReference
     @OneToMany(mappedBy = "assignedUser")
     private List<Solicitation> solicitations;
     @Getter @Setter
     @OneToMany(mappedBy = "user")
+    @JsonManagedReference
     private List<Contribution> contributions;
     @Getter @Setter
     @ManyToOne
+    @JsonBackReference
     private Profile profile;
 }

@@ -1,6 +1,7 @@
 package com.CoffeControl.backend.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,5 +24,6 @@ public class Profile {
     private String description;
     @Getter @Setter
     @OneToMany(mappedBy = "profile")
+    @JsonManagedReference
     private List<User> users;
 }
