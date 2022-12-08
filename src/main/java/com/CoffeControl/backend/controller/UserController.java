@@ -2,10 +2,13 @@ package com.CoffeControl.backend.controller;
 
 import com.CoffeControl.backend.dto.UserDetailedDto;
 import com.CoffeControl.backend.dto.UserDto;
+import com.CoffeControl.backend.form.UserPostForm;
 import com.CoffeControl.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
 @RequestMapping(value = "/users")
@@ -21,5 +24,9 @@ public class UserController {
     @GetMapping("/{id}")
     public UserDetailedDto findSpecificUser(@PathVariable("id") Integer id) throws Exception {
         return userService.getSpecificUser(id);
+    }
+    @PostMapping
+    public ResponseEntity<UserDto> register(@RequestBody UserPostForm form,UriComponentsBuilder uriBuilder) {
+        return userService.register(form,uriBuilder);
     }
 }

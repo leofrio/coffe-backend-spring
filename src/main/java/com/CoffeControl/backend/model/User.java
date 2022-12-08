@@ -38,4 +38,11 @@ public class User {
     @ManyToOne
     @JsonBackReference
     private Profile profile;
+
+    public User(String name, String registration, String password, Profile profile) {
+        this.name = name;
+        this.registration = registration;
+        this.password = password;
+        this.profile = profile;
+    }
 }
