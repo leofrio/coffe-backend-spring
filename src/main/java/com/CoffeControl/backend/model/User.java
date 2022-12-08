@@ -31,9 +31,6 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Contribution> contributions;
     @Getter @Setter
-    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-    @JoinTable(name="user_profile", joinColumns=
-            {@JoinColumn(name="profile_id")}, inverseJoinColumns=
-            {@JoinColumn(name="user_id")})
-    private List<Profile> profiles;
+    @ManyToOne
+    private Profile profile;
 }

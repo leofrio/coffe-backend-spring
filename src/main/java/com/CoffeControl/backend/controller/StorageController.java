@@ -2,10 +2,13 @@ package com.CoffeControl.backend.controller;
 
 import com.CoffeControl.backend.dto.StorageDetailedDto;
 import com.CoffeControl.backend.dto.StorageDto;
+import com.CoffeControl.backend.form.ProductUpdateForm;
 import com.CoffeControl.backend.form.StorageUpdateQuantityForm;
 import com.CoffeControl.backend.service.StorageService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -29,5 +32,13 @@ public class StorageController {
     public StorageDetailedDto getByProductId(@PathVariable("id") Integer product_id) throws Exception {
         return storageService.getByProductId(product_id);
     }
-
+    @PutMapping("/{id}/updateProduct")
+    public StorageDetailedDto updateProduct(@PathVariable("id") Integer id,@RequestBody ProductUpdateForm form) throws Exception {
+        return storageService.updateProduct(id, form);
+    }
+    @DeleteMapping("/{id}")
+    @Transactional
+    public ResponseEntity<StorageDto> deleteStorage(@PathVariable("id") Integer id) throws Exception {
+        return storageService.deleteStorage(id);
+    }
 }

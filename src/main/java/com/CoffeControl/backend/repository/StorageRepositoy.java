@@ -11,4 +11,5 @@ import java.util.List;
 public interface StorageRepositoy extends JpaRepository<Storage,Integer> {
     @Query(value ="SELECT * FROM product_storage s WHERE s.product_id = :product_id" ,nativeQuery = true)
     public List<Storage> findByProductId(Integer product_id);
+
 }
