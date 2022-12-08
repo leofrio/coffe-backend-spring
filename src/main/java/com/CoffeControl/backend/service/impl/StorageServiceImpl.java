@@ -4,6 +4,7 @@ import com.CoffeControl.backend.dto.StorageDetailedDto;
 import com.CoffeControl.backend.dto.StorageDto;
 import com.CoffeControl.backend.form.ProductPostForm;
 import com.CoffeControl.backend.form.ProductUpdateForm;
+import com.CoffeControl.backend.form.StorageUpdateForm;
 import com.CoffeControl.backend.form.StorageUpdateQuantityForm;
 import com.CoffeControl.backend.model.Product;
 import com.CoffeControl.backend.model.Storage;
@@ -92,5 +93,20 @@ public class StorageServiceImpl implements StorageService {
         productRepository.deleteById(storage.getProduct().getId());
 
         return ResponseEntity.status(204).body(new StorageDto(storage));
+    }
+
+    @Override
+    public ResponseEntity<StorageDetailedDto> updateStorage(Integer id, StorageUpdateForm form) throws Exception {
+        Storage storage=storageRepositoy.findById(id).orElseThrow(() -> new Exception("storage not found"));
+        Product product =productRepository.findById(storage.getProduct().getId()).orElseThrow(() -> new Exception("product not found"));
+        product.setName(form.getName() != null ? form.getName() :  product.getName());
+        product.setDescription(form.getDescription() != null ? form.getDescription() :  product.getDescription());
+        product.setEnabled(form.getEnabled() != null ? form.getEnabled() :  product.getEnabled());
+        product.setMinUserAmount(form.getMinUserAmount() != null ? form.getMinUserAmount() :  product.getMinUserAmount());
+        storage.setCurrentAmount(form.getCurrentAmount() != null ? form.getCurrentAmount() : storage.getCurrentAmount());
+        storage.setMinAmount(form.getMinAmount() != null ? form.getMinAmount() : storage.getMinAmount());
+        productRepository.save(product);
+        storageRepositoy.save(storage);
+        return ResponseEntity.ok(new StorageDetailedDto(storage));
     }
 }

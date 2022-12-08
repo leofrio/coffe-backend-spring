@@ -3,6 +3,7 @@ package com.CoffeControl.backend.controller;
 import com.CoffeControl.backend.dto.StorageDetailedDto;
 import com.CoffeControl.backend.dto.StorageDto;
 import com.CoffeControl.backend.form.ProductUpdateForm;
+import com.CoffeControl.backend.form.StorageUpdateForm;
 import com.CoffeControl.backend.form.StorageUpdateQuantityForm;
 import com.CoffeControl.backend.service.StorageService;
 import jakarta.transaction.Transactional;
@@ -40,5 +41,9 @@ public class StorageController {
     @Transactional
     public ResponseEntity<StorageDto> deleteStorage(@PathVariable("id") Integer id) throws Exception {
         return storageService.deleteStorage(id);
+    }
+    @PutMapping("/{id}")
+    public ResponseEntity<StorageDetailedDto> updateStorage(@PathVariable("id") Integer id,@RequestBody StorageUpdateForm form) throws Exception {
+       return  storageService.updateStorage(id,form);
     }
 }

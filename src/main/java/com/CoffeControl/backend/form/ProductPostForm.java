@@ -17,7 +17,7 @@ public class ProductPostForm {
     @NotNull @NotEmpty
     private Integer minUserAmount;
     @Getter @Setter
-    private boolean enabled=false;
+    private Boolean enabled=false;
     @Getter @Setter
     private Integer minAmount;
     @Getter @Setter

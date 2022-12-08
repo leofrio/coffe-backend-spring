@@ -43,6 +43,6 @@ public class Product {
         this.name = form.getName();
         this.description = form.getDescription();
         this.minUserAmount = form.getMinUserAmount();
-        this.enabled = form.isEnabled();
+        this.enabled = form.getEnabled();
     }
 }

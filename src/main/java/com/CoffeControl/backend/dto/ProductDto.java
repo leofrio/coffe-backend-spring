@@ -14,7 +14,7 @@ public class ProductDto {
     @Getter
     private Integer minUserAmount;
     @Getter
-    private boolean enabled;
+    private Boolean enabled;
 
     public ProductDto(Product product) {
         this.id = product.getId();
