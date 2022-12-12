@@ -27,17 +27,24 @@ public class Product {
     private Integer minUserAmount;
     @Getter @Setter
     private Boolean enabled;
-    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    /*@ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     @JoinTable(name="contribution_product", joinColumns=
             {@JoinColumn(name="contribution_id")}, inverseJoinColumns=
             {@JoinColumn(name="product_id")})
-    private List<Contribution> contributions;
+    private List<Contribution> contributions;*/
     @Getter @Setter
+    @OneToMany(mappedBy = "product")
+    private List<ContributionProduct> contributions;
+    /*@Getter @Setter
     @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     @JoinTable(name="solicitation_product", joinColumns=
             {@JoinColumn(name="solicitation_id")}, inverseJoinColumns=
             {@JoinColumn(name="product_id")})
-    private List<Solicitation> solicitations;
+    private List<Solicitation> solicitations;*/
+    @Getter @Setter
+    @OneToMany(mappedBy = "product")
+    private List<SolicitationProduct> solicitations;
+
 
     public Product(ProductPostForm form) {
         this.name = form.getName();

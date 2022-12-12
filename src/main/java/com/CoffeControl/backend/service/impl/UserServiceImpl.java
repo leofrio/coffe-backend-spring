@@ -19,7 +19,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.net.URI;
 
 @Service
-public class UserServiceimpl implements UserService {
+public class UserServiceImpl implements UserService {
 
 
     @Autowired

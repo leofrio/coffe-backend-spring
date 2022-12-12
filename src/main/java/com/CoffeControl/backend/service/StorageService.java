@@ -1,12 +1,10 @@
 package com.CoffeControl.backend.service;
 
+import com.CoffeControl.backend.dto.SolicitationDto;
 import com.CoffeControl.backend.dto.StorageDetailedDto;
 import com.CoffeControl.backend.dto.StorageDto;
 import com.CoffeControl.backend.dto.StorageLessDetailedDto;
-import com.CoffeControl.backend.form.ProductPostForm;
-import com.CoffeControl.backend.form.ProductUpdateForm;
-import com.CoffeControl.backend.form.StorageUpdateForm;
-import com.CoffeControl.backend.form.StorageUpdateQuantityForm;
+import com.CoffeControl.backend.form.*;
 import com.CoffeControl.backend.model.Product;
 import com.CoffeControl.backend.model.Storage;
 import org.springframework.data.domain.Page;
@@ -33,4 +31,6 @@ public interface StorageService {
     ResponseEntity<StorageDetailedDto> updateStorage(Integer id, StorageUpdateForm form) throws Exception;
 
     Page<StorageLessDetailedDto> startsWithProductName(String name, Integer page, Integer limit);
+
+    ResponseEntity<SolicitationDto> addNewSolicitation(Integer id, SolicitationPostForm form, UriComponentsBuilder uriBuilder) throws Exception;
 }
