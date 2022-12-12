@@ -2,6 +2,7 @@ package com.CoffeControl.backend.service;
 
 import com.CoffeControl.backend.dto.StorageDetailedDto;
 import com.CoffeControl.backend.dto.StorageDto;
+import com.CoffeControl.backend.dto.StorageLessDetailedDto;
 import com.CoffeControl.backend.form.ProductPostForm;
 import com.CoffeControl.backend.form.ProductUpdateForm;
 import com.CoffeControl.backend.form.StorageUpdateForm;
@@ -30,4 +31,6 @@ public interface StorageService {
     ResponseEntity<StorageDto> deleteStorage(Integer id) throws Exception;
 
     ResponseEntity<StorageDetailedDto> updateStorage(Integer id, StorageUpdateForm form) throws Exception;
+
+    Page<StorageLessDetailedDto> startsWithProductName(String name, Integer page, Integer limit);
 }

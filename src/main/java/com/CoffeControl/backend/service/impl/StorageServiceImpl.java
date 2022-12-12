@@ -2,6 +2,7 @@ package com.CoffeControl.backend.service.impl;
 
 import com.CoffeControl.backend.dto.StorageDetailedDto;
 import com.CoffeControl.backend.dto.StorageDto;
+import com.CoffeControl.backend.dto.StorageLessDetailedDto;
 import com.CoffeControl.backend.form.ProductPostForm;
 import com.CoffeControl.backend.form.ProductUpdateForm;
 import com.CoffeControl.backend.form.StorageUpdateForm;
@@ -108,5 +109,12 @@ public class StorageServiceImpl implements StorageService {
         productRepository.save(product);
         storageRepositoy.save(storage);
         return ResponseEntity.ok(new StorageDetailedDto(storage));
+    }
+
+    @Override
+    public Page<StorageLessDetailedDto> startsWithProductName(String name, Integer page, Integer limit) {
+        Pageable pagination= PageRequest.of(page,limit);
+        Page<Storage> storage= storageRepositoy.findByProductName(name,pagination);
+        return StorageLessDetailedDto.convert(storage);
     }
 }

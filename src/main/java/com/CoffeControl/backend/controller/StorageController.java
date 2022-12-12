@@ -2,6 +2,7 @@ package com.CoffeControl.backend.controller;
 
 import com.CoffeControl.backend.dto.StorageDetailedDto;
 import com.CoffeControl.backend.dto.StorageDto;
+import com.CoffeControl.backend.dto.StorageLessDetailedDto;
 import com.CoffeControl.backend.form.ProductUpdateForm;
 import com.CoffeControl.backend.form.StorageUpdateForm;
 import com.CoffeControl.backend.form.StorageUpdateQuantityForm;
@@ -45,5 +46,9 @@ public class StorageController {
     @PutMapping("/{id}")
     public ResponseEntity<StorageDetailedDto> updateStorage(@PathVariable("id") Integer id,@RequestBody StorageUpdateForm form) throws Exception {
        return  storageService.updateStorage(id,form);
+    }
+    @GetMapping("/productName/{name}")
+    public Page<StorageLessDetailedDto> findByProductName(@PathVariable("name") String name, @RequestParam(required = false,defaultValue = "0") Integer page, @RequestParam(required = false,defaultValue = "3") Integer limit) {
+        return  storageService.startsWithProductName(name,page,limit);
     }
 }
