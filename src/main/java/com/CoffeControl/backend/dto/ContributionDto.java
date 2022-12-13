@@ -4,6 +4,7 @@ import com.CoffeControl.backend.model.Contribution;
 import com.CoffeControl.backend.model.ContributionProduct;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.domain.Page;
 
 import java.util.Date;
 
@@ -28,5 +29,9 @@ public class ContributionDto {
         this.solicitation_id=c.getContribution().getSolicitation().getId();
         this.contributionDate = c.getContribution().getContributionDate();
         this.user_id=c.getContribution().getUser().getId();
+    }
+
+    public static Page<ContributionDto> convert(Page<Contribution> contributions) {
+        return contributions.map(ContributionDto::new);
     }
 }
