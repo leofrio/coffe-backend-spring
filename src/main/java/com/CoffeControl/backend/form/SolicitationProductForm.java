@@ -5,11 +5,9 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
-public class SolicitationPostForm {
+public class SolicitationProductForm {
     @Getter @Setter @NotEmpty @NotNull
-    private String name;
+    private Integer productId;
     @Getter @Setter @NotNull @NotEmpty
-    private String username;
-    @Getter @Setter @NotNull @NotEmpty
-    private SolicitationProductForm[] products;
+    private Integer requiredAmount;
 }

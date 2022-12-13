@@ -24,4 +24,8 @@ public class SolicitationProduct {
     @Column(name = "asked_amount")
     private Integer amountAsked;
 
+    public SolicitationProduct(SolicitationProductId id,Integer amountAsked) {
+        this.id = id;
+        this.amountAsked = amountAsked;
+    }
 }

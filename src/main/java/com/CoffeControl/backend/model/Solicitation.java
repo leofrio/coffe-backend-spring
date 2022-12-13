@@ -1,5 +1,6 @@
 package com.CoffeControl.backend.model;
 
+import com.CoffeControl.backend.form.SolicitationPostForm;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -8,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
@@ -34,4 +36,9 @@ public class Solicitation {
     @JsonManagedReference
     private List<Contribution> contributions;
 
+    public Solicitation(SolicitationPostForm form, User user) {
+        this.name= form.getName();
+        this.solicitation_date=new Date(LocalDate.now().getYear(),LocalDate.now().getMonthValue(),LocalDate.now().getDayOfMonth());
+        this.assignedUser=user;
+    }
 }

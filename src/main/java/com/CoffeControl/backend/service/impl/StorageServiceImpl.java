@@ -1,10 +1,12 @@
 package com.CoffeControl.backend.service.impl;
 
-import com.CoffeControl.backend.dto.SolicitationDto;
 import com.CoffeControl.backend.dto.StorageDetailedDto;
 import com.CoffeControl.backend.dto.StorageDto;
 import com.CoffeControl.backend.dto.StorageLessDetailedDto;
-import com.CoffeControl.backend.form.*;
+import com.CoffeControl.backend.form.ProductPostForm;
+import com.CoffeControl.backend.form.ProductUpdateForm;
+import com.CoffeControl.backend.form.StorageUpdateForm;
+import com.CoffeControl.backend.form.StorageUpdateQuantityForm;
 import com.CoffeControl.backend.model.Product;
 import com.CoffeControl.backend.model.Storage;
 import com.CoffeControl.backend.repository.ProductRepository;
@@ -121,13 +123,5 @@ public class StorageServiceImpl implements StorageService {
         Page<Storage> storage= storageRepositoy.findByProductName(name,pagination);
         return StorageLessDetailedDto.convert(storage);
     }
-
-    @Override
-    public ResponseEntity<SolicitationDto> addNewSolicitation(Integer id, SolicitationPostForm form, UriComponentsBuilder uriBuilder) throws Exception {
-        Storage storage=storageRepositoy.findById(id).orElseThrow(() -> new Exception("no product found"));
-        Product product=storage.getProduct();
-
-    }
-
 
 }
