@@ -2,6 +2,7 @@ package com.CoffeControl.backend.model;
 
 import com.CoffeControl.backend.form.ProductPostForm;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,6 +35,7 @@ public class Product {
     private List<Contribution> contributions;*/
     @Getter @Setter
     @OneToMany(mappedBy = "product")
+    @JsonManagedReference
     private List<ContributionProduct> contributions;
     /*@Getter @Setter
     @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
@@ -43,8 +45,8 @@ public class Product {
     private List<Solicitation> solicitations;*/
     @Getter @Setter
     @OneToMany(mappedBy = "product")
+    @JsonManagedReference
     private List<SolicitationProduct> solicitations;
-
 
     public Product(ProductPostForm form) {
         this.name = form.getName();

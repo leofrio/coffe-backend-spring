@@ -1,6 +1,7 @@
 package com.CoffeControl.backend.model;
 
 import com.CoffeControl.backend.model.compositeKey.SolicitationProductId;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,10 +16,12 @@ public class SolicitationProduct {
     @Getter @Setter
     @ManyToOne
     @MapsId("solicitationId")
+    @JsonBackReference
     private Solicitation solicitation;
     @Getter @Setter
     @ManyToOne
     @MapsId("productId")
+    @JsonBackReference
     private Product product;
     @Getter @Setter
     @Column(name = "asked_amount")

@@ -16,6 +16,8 @@ public class StorageDetailedDto {
     private Product product;
 
     public StorageDetailedDto(Storage s) {
+        System.out.println("product:");
+        System.out.println(s.getProduct());
         this.id = s.getId();
         this.currentAmount = s.getCurrentAmount();
         this.minAmount = s.getMinAmount();
