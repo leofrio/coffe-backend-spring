@@ -1,6 +1,5 @@
 package com.CoffeControl.backend.dto;
 
-import com.CoffeControl.backend.model.Product;
 import com.CoffeControl.backend.model.Storage;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,14 +12,12 @@ public class StorageDetailedDto {
     @Getter @Setter
     private Integer minAmount=0;
     @Getter @Setter
-    private Product product;
+    private ProductDetailedDto product;
 
     public StorageDetailedDto(Storage s) {
-        System.out.println("product:");
-        System.out.println(s.getProduct());
         this.id = s.getId();
         this.currentAmount = s.getCurrentAmount();
         this.minAmount = s.getMinAmount();
-        this.product = s.getProduct();
+        this.product = new ProductDetailedDto(s.getProduct());
     }
 }
