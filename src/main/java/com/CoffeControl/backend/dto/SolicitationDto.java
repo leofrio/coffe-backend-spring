@@ -9,8 +9,7 @@ import org.springframework.data.domain.Page;
 import java.util.Date;
 
 public class SolicitationDto {
-    @Getter
-    @Setter
+    @Getter @Setter
     private Integer id;
     @Getter @Setter
     private String name;

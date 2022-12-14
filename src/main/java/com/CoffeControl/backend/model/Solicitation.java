@@ -35,6 +35,7 @@ public class Solicitation {
     @OneToMany(mappedBy = "solicitation")
     @JsonManagedReference
     private List<Contribution> contributions;
+    
 
     public Solicitation(SolicitationPostForm form, User user) {
         this.name= form.getName();
