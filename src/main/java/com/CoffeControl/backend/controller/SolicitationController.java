@@ -1,5 +1,6 @@
 package com.CoffeControl.backend.controller;
 
+import com.CoffeControl.backend.dto.SolicitationDetailedDto;
 import com.CoffeControl.backend.dto.SolicitationDto;
 import com.CoffeControl.backend.form.SolicitationPostForm;
 import com.CoffeControl.backend.service.SolicitationService;
@@ -23,5 +24,9 @@ public class SolicitationController {
     @PostMapping
     public ResponseEntity<SolicitationDto> newSolicitation(@RequestBody SolicitationPostForm form, UriComponentsBuilder uriBuilder) throws Exception {
         return solicitationService.register(form,uriBuilder);
+    }
+    @GetMapping("/{id}")
+    public SolicitationDetailedDto getSpecificSolicitation(@PathVariable("id") Integer id) throws Exception {
+        return solicitationService.getSpecificSolicitation(id);
     }
 }

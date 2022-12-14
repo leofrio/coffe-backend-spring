@@ -1,5 +1,6 @@
 package com.CoffeControl.backend.service.impl;
 
+import com.CoffeControl.backend.dto.SolicitationDetailedDto;
 import com.CoffeControl.backend.dto.SolicitationDto;
 import com.CoffeControl.backend.form.SolicitationPostForm;
 import com.CoffeControl.backend.model.Product;
@@ -59,5 +60,11 @@ public class SolicitationServiceImpl implements SolicitationService {
         }
         URI uri= uriBuilder.path("solications/{id}").buildAndExpand(solicitation.getId()).toUri();
         return ResponseEntity.created(uri).body(new SolicitationDto(solicitation));
+    }
+
+    @Override
+    public SolicitationDetailedDto getSpecificSolicitation(Integer id) throws Exception {
+        Solicitation solicitation= solicitationRepository.findById(id).orElseThrow(() -> new Exception("no solicitation found with that id"));
+        return new SolicitationDetailedDto(solicitation);
     }
 }
