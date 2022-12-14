@@ -1,7 +1,9 @@
 package com.CoffeControl.backend.controller;
 
+import com.CoffeControl.backend.dto.ContributionDto;
 import com.CoffeControl.backend.dto.UserDetailedDto;
 import com.CoffeControl.backend.dto.UserDto;
+import com.CoffeControl.backend.form.ContributionPostForm;
 import com.CoffeControl.backend.form.UserPostForm;
 import com.CoffeControl.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,5 +30,9 @@ public class UserController {
     @PostMapping
     public ResponseEntity<UserDto> register(@RequestBody UserPostForm form,UriComponentsBuilder uriBuilder) {
         return userService.register(form,uriBuilder);
+    }
+    @PostMapping("/{id}/addContribution")
+    public ResponseEntity<ContributionDto> makeContribution(@PathVariable("id") Integer id, @RequestBody ContributionPostForm form, UriComponentsBuilder uriBuilder) throws Exception {
+        return userService.newContribution(id,form,uriBuilder);
     }
 }

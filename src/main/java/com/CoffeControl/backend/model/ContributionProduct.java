@@ -26,4 +26,9 @@ public class ContributionProduct {
     @Getter @Setter
     @Column(name="amount_given")
     private Integer GivenAmount;
+
+    public ContributionProduct(ContributionProductId id, Integer givenAmount) {
+        this.id = id;
+        GivenAmount = givenAmount;
+    }
 }

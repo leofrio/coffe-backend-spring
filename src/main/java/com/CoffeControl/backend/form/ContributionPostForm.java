@@ -7,9 +7,7 @@ import lombok.Setter;
 
 public class ContributionPostForm {
     @Getter @Setter @NotEmpty @NotNull
-    private String username;
-    @Getter @Setter @NotEmpty @NotNull
     private Integer solicitationId;
     @Getter @Setter @NotEmpty @NotNull
-    private ContributionProductForm products;
+    private ContributionProductForm[] products;
 }

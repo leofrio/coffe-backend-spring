@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.Date;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Entity(name = "contributions")
@@ -31,4 +32,12 @@ public class Contribution {
     @JoinColumn(name = "solicitation_id")
     @JsonBackReference
     private Solicitation solicitation;
+
+
+    public Contribution(User user, Solicitation solicitation) {
+        this.user=user;
+        this.solicitation=solicitation;
+        this.contributionDate=new Date(LocalDate.now().getYear(),LocalDate.now().getMonthValue(),LocalDate.now().getDayOfMonth());
+
+    }
 }

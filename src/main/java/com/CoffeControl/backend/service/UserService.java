@@ -1,7 +1,9 @@
 package com.CoffeControl.backend.service;
 
+import com.CoffeControl.backend.dto.ContributionDto;
 import com.CoffeControl.backend.dto.UserDetailedDto;
 import com.CoffeControl.backend.dto.UserDto;
+import com.CoffeControl.backend.form.ContributionPostForm;
 import com.CoffeControl.backend.form.UserPostForm;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -15,4 +17,6 @@ public interface UserService {
     UserDetailedDto getSpecificUser(Integer id) throws Exception;
 
     ResponseEntity<UserDto> register(UserPostForm form, UriComponentsBuilder uriBuilder);
+
+    ResponseEntity<ContributionDto> newContribution(Integer id, ContributionPostForm form, UriComponentsBuilder uriBuilder) throws Exception;
 }

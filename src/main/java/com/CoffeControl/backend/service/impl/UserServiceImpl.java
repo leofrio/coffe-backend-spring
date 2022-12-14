@@ -1,12 +1,14 @@
 package com.CoffeControl.backend.service.impl;
 
+import com.CoffeControl.backend.dto.ContributionDto;
 import com.CoffeControl.backend.dto.UserDetailedDto;
 import com.CoffeControl.backend.dto.UserDto;
+import com.CoffeControl.backend.form.ContributionPostForm;
+import com.CoffeControl.backend.form.ContributionProductForm;
 import com.CoffeControl.backend.form.UserPostForm;
-import com.CoffeControl.backend.model.Profile;
-import com.CoffeControl.backend.model.User;
-import com.CoffeControl.backend.repository.ProfileRepository;
-import com.CoffeControl.backend.repository.UserRepository;
+import com.CoffeControl.backend.model.*;
+import com.CoffeControl.backend.model.compositeKey.ContributionProductId;
+import com.CoffeControl.backend.repository.*;
 import com.CoffeControl.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -27,6 +29,14 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private ProfileRepository profileRepository;
+    @Autowired
+    private  ContributionRepository contributionRepository;
+    @Autowired
+    private SolicitationRepository solicitationRepository;
+    @Autowired
+    private ProductRepository productRepository;
+    @Autowired
+    private ContributionProductRepository contributionProductRepository;
 
 
     @Override
@@ -57,5 +67,25 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
         URI uri= uriBuilder.path("users/{id}").buildAndExpand(user.getId()).toUri();
         return ResponseEntity.created(uri).body(new UserDto(user));
+    }
+
+    @Override
+    public ResponseEntity<ContributionDto> newContribution(Integer id, ContributionPostForm form, UriComponentsBuilder uriBuilder) throws Exception {
+        Solicitation solicitation=solicitationRepository.findById(form.getSolicitationId()).orElseThrow(() -> new Exception("no solicitation found with that id"));
+        User user = userRepository.findById(id).orElseThrow(() -> new Exception("no user found with that id"));
+        Contribution contribution= new Contribution(user,solicitation);
+        contribution=contributionRepository.save(contribution);
+        for(ContributionProductForm current : form.getProducts()) {
+            Integer productId=current.getProductId();
+            Integer givenAmount=current.getGivenAmount();
+            Product product=productRepository.findById(productId).orElseThrow(() -> new Exception("no product found with id: " +productId));
+            ContributionProductId contributionProductId=new ContributionProductId(contribution.getId(), productId);
+            ContributionProduct contributionProduct=new ContributionProduct(contributionProductId,givenAmount);
+            contributionProduct.setContribution(contribution);
+            contributionProduct.setProduct(product);
+            contributionProductRepository.save(contributionProduct);
+        }
+        URI uri= uriBuilder.path("contributions/{id}").buildAndExpand(contribution.getId()).toUri();
+        return ResponseEntity.created(uri).body(new ContributionDto(contribution));
     }
 }

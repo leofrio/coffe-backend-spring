@@ -24,5 +24,4 @@ public class SolicitationController {
     public ResponseEntity<SolicitationDto> newSolicitation(@RequestBody SolicitationPostForm form, UriComponentsBuilder uriBuilder) throws Exception {
         return solicitationService.register(form,uriBuilder);
     }
-
 }
