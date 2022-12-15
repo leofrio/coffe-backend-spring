@@ -9,6 +9,7 @@ import com.CoffeControl.backend.form.UserPostForm;
 import com.CoffeControl.backend.model.*;
 import com.CoffeControl.backend.model.compositeKey.ContributionProductId;
 import com.CoffeControl.backend.repository.*;
+import com.CoffeControl.backend.service.ContributionService;
 import com.CoffeControl.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -32,6 +33,8 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private  ContributionRepository contributionRepository;
     @Autowired
+    private ContributionService contributionService;
+    @Autowired
     private SolicitationRepository solicitationRepository;
     @Autowired
     private ProductRepository productRepository;
@@ -39,6 +42,8 @@ public class UserServiceImpl implements UserService {
     private ContributionProductRepository contributionProductRepository;
     @Autowired
     private SolicitationProductRepository solicitationProductRepository;
+    @Autowired
+    private StorageRepositoy storageRepositoy;
 
 
     @Override
@@ -81,9 +86,7 @@ public class UserServiceImpl implements UserService {
             Integer productId=current.getProductId();
             Integer givenAmount=current.getGivenAmount();
             if(!solicitationProductRepository.checkIfProductExistsInSolicitation(solicitation.getId(),productId)) {
-                Integer contributionId= contribution.getId();
-                contributionRepository.deleteById(contributionId);
-                throw new Exception("product id " + productId + " not in solicitation");
+                continue;
             }
             Product product=productRepository.findById(productId).orElseThrow(() -> new Exception("no product found with id: " +productId));
             ContributionProductId contributionProductId=new ContributionProductId(contribution.getId(), productId);
@@ -91,6 +94,9 @@ public class UserServiceImpl implements UserService {
             contributionProduct.setContribution(contribution);
             contributionProduct.setProduct(product);
             contributionProductRepository.save(contributionProduct);
+            Storage storage=storageRepositoy.findByProductId(productId).get(0);
+            storage.setCurrentAmount(storage.getCurrentAmount() + givenAmount);
+            storageRepositoy.save(storage);
         }
         URI uri= uriBuilder.path("contributions/{id}").buildAndExpand(contribution.getId()).toUri();
         return ResponseEntity.created(uri).body(new ContributionDto(contribution));

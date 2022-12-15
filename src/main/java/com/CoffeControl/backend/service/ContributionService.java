@@ -7,4 +7,6 @@ import org.springframework.stereotype.Service;
 @Service
 public interface ContributionService {
     Page<ContributionDto> list(Integer page, Integer limit);
+
+    String delete(Integer id) throws Exception;
 }

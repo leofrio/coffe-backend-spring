@@ -16,11 +16,13 @@ public class ContributionProduct {
     @Getter @Setter
     @ManyToOne
     @MapsId("contributionId")
+    @JoinColumn(name = "contribution_id")
     @JsonBackReference
     private Contribution contribution;
     @Getter @Setter
     @ManyToOne
     @MapsId("productId")
+    @JoinColumn(name = "product_id")
     @JsonBackReference
     private Product product;
     @Getter @Setter

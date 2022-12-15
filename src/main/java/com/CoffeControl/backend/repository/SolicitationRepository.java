@@ -13,4 +13,6 @@ public interface SolicitationRepository extends JpaRepository<Solicitation,Integ
             " inner join solicitations s on s.id=sp.solicitation_id " +
             " where sp.solicitation_id = :solicitationId;",nativeQuery = true)
     public List<Integer> getRequiredAmounts(Integer solicitationId);
+
+
 }
