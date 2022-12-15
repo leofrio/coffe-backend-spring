@@ -37,6 +37,8 @@ public class UserServiceImpl implements UserService {
     private ProductRepository productRepository;
     @Autowired
     private ContributionProductRepository contributionProductRepository;
+    @Autowired
+    private SolicitationProductRepository solicitationProductRepository;
 
 
     @Override
@@ -78,6 +80,10 @@ public class UserServiceImpl implements UserService {
         for(ContributionProductForm current : form.getProducts()) {
             Integer productId=current.getProductId();
             Integer givenAmount=current.getGivenAmount();
+            if(!solicitationProductRepository.checkIfProductExistsInSolicitation(solicitation.getId(),productId)) {
+                contributionRepository.deleteById(contribution.getId());
+                throw new Exception("product id " + productId + " not in solicitation");
+            }
             Product product=productRepository.findById(productId).orElseThrow(() -> new Exception("no product found with id: " +productId));
             ContributionProductId contributionProductId=new ContributionProductId(contribution.getId(), productId);
             ContributionProduct contributionProduct=new ContributionProduct(contributionProductId,givenAmount);
