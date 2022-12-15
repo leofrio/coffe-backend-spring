@@ -3,12 +3,15 @@ package com.CoffeControl.backend.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
+
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Entity(name = "contributions")
 @NoArgsConstructor
@@ -31,6 +34,10 @@ public class Contribution {
     @JoinColumn(name = "solicitation_id")
     @JsonBackReference
     private Solicitation solicitation;
+    @Getter @Setter
+    @OneToMany(mappedBy = "contribution")
+    @JsonManagedReference
+    private List<ContributionProduct> products;
 
 
     public Contribution(User user, Solicitation solicitation) {
