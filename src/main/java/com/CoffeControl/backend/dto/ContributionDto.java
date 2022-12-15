@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.domain.Page;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public class ContributionDto {
     @Getter @Setter
@@ -16,7 +16,7 @@ public class ContributionDto {
     @Getter @Setter
     private Integer user_id;
     @Getter @Setter
-    private Date contributionDate;
+    private LocalDateTime contributionDate;
 
     public ContributionDto(Contribution c) {
         this.id = c.getId();

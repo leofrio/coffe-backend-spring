@@ -81,7 +81,8 @@ public class UserServiceImpl implements UserService {
             Integer productId=current.getProductId();
             Integer givenAmount=current.getGivenAmount();
             if(!solicitationProductRepository.checkIfProductExistsInSolicitation(solicitation.getId(),productId)) {
-                contributionRepository.deleteById(contribution.getId());
+                Integer contributionId= contribution.getId();
+                contributionRepository.deleteById(contributionId);
                 throw new Exception("product id " + productId + " not in solicitation");
             }
             Product product=productRepository.findById(productId).orElseThrow(() -> new Exception("no product found with id: " +productId));

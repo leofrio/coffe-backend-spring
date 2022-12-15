@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.domain.Page;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public class SolicitationDto {
     @Getter @Setter
@@ -14,7 +14,7 @@ public class SolicitationDto {
     @Getter @Setter
     private String name;
     @Getter @Setter
-    private Date solicitation_date;
+    private LocalDateTime solicitation_date;
     @Getter @Setter
     private Integer assigned_User_Id;
 

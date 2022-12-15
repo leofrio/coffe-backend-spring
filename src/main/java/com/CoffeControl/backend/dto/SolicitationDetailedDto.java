@@ -5,7 +5,7 @@ import com.CoffeControl.backend.model.SolicitationProduct;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -15,7 +15,7 @@ public class SolicitationDetailedDto {
     @Getter @Setter
     private String name;
     @Getter @Setter
-    private Date solicitation_date;
+    private LocalDateTime solicitation_date;
     @Getter @Setter
     private UserDto assignedUser;
     @Getter @Setter
