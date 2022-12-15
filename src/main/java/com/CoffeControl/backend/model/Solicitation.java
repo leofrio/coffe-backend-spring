@@ -26,6 +26,8 @@ public class Solicitation {
     @Getter @Setter
     private LocalDateTime solicitation_date=LocalDateTime.now();
     @Getter @Setter
+    private Boolean enabled=true;
+    @Getter @Setter
     @ManyToOne
     @JoinColumn(name = "assigned_user_id")
     @JsonBackReference
@@ -34,6 +36,10 @@ public class Solicitation {
     @OneToMany(mappedBy = "solicitation")
     @JsonManagedReference
     private List<Contribution> contributions;
+    @Getter @Setter
+    @OneToMany(mappedBy = "solicitation")
+    @JsonManagedReference
+    private List<SolicitationProduct> products;
     
 
     public Solicitation(SolicitationPostForm form, User user) {

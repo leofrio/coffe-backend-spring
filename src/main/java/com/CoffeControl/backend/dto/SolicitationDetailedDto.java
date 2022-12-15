@@ -20,6 +20,9 @@ public class SolicitationDetailedDto {
     private UserDto assignedUser;
     @Getter @Setter
     private List<ContributionDto> contributions;
+    @Getter @Setter
+    private Boolean enabled;
+
 
     public SolicitationDetailedDto(Solicitation s) {
         this.id = s.getId();
@@ -27,6 +30,7 @@ public class SolicitationDetailedDto {
         this.solicitation_date = s.getSolicitation_date();
         this.assignedUser=new UserDto(s.getAssignedUser());
         this.contributions=s.getContributions().stream().map(ContributionDto::new).collect(Collectors.toList());
+        this.enabled=s.getEnabled();
     }
     public SolicitationDetailedDto(SolicitationProduct s) {
         this.id = s.getSolicitation().getId();
@@ -34,5 +38,6 @@ public class SolicitationDetailedDto {
         this.solicitation_date = s.getSolicitation().getSolicitation_date();
         this.assignedUser=new UserDto(s.getSolicitation().getAssignedUser());
         this.contributions=s.getSolicitation().getContributions().stream().map(ContributionDto::new).collect(Collectors.toList());
+        this.enabled=s.getSolicitation().getEnabled();
     }
 }
