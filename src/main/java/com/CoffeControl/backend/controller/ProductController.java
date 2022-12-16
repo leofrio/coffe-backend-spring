@@ -1,6 +1,8 @@
 package com.CoffeControl.backend.controller;
 
 import com.CoffeControl.backend.dto.ProductDto;
+import com.CoffeControl.backend.dto.ProductFilterDto;
+import com.CoffeControl.backend.form.ProductFilterForm;
 import com.CoffeControl.backend.form.ProductPostForm;
 import com.CoffeControl.backend.form.ProductUpdateForm;
 import com.CoffeControl.backend.service.ProductService;
@@ -10,6 +12,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/products")
@@ -37,6 +41,10 @@ public class ProductController {
     @GetMapping("/{id}/disable")
     public ProductDto disable(@PathVariable("id") Integer id) throws Exception{
         return productService.disable(id);
+    }
+    @GetMapping("/filter")
+    public List<ProductFilterDto> filter(ProductFilterForm form) {
+        return productService.filter(form);
     }
 
 }

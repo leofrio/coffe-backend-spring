@@ -67,4 +67,5 @@ public class SolicitationServiceImpl implements SolicitationService {
         Solicitation solicitation= solicitationRepository.findById(id).orElseThrow(() -> new Exception("no solicitation found with that id"));
         return new SolicitationDetailedDto(solicitation);
     }
+
 }

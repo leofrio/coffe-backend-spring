@@ -1,6 +1,8 @@
 package com.CoffeControl.backend.service.impl;
 
 import com.CoffeControl.backend.dto.ProductDto;
+import com.CoffeControl.backend.dto.ProductFilterDto;
+import com.CoffeControl.backend.form.ProductFilterForm;
 import com.CoffeControl.backend.form.ProductPostForm;
 import com.CoffeControl.backend.form.ProductUpdateForm;
 import com.CoffeControl.backend.model.Product;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -68,5 +71,10 @@ public class ProductServiceImpl implements ProductService {
         product.setEnabled(false);
         productRepository.save(product);
         return new ProductDto(product);
+    }
+
+    @Override
+    public List<ProductFilterDto> filter(ProductFilterForm form) {
+        return productRepository.filter(form.getName(),form.getDescription(),form.getMinUserAmount(),form.getCurrentAmount(),form.getMinUserAmount(),form.getEnabled());
     }
 }

@@ -1,12 +1,16 @@
 package com.CoffeControl.backend.service;
 
 import com.CoffeControl.backend.dto.ProductDto;
+import com.CoffeControl.backend.dto.ProductFilterDto;
+import com.CoffeControl.backend.form.ProductFilterForm;
 import com.CoffeControl.backend.form.ProductPostForm;
 import com.CoffeControl.backend.form.ProductUpdateForm;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
+
+import java.util.List;
 
 @Service
 public interface ProductService {
@@ -19,4 +23,6 @@ public interface ProductService {
     ProductDto enable(Integer id) throws Exception;
 
     ProductDto disable(Integer id) throws Exception;
+
+    List<ProductFilterDto> filter(ProductFilterForm form);
 }
