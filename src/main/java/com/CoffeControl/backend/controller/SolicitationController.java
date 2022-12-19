@@ -17,8 +17,8 @@ public class SolicitationController {
     private SolicitationService solicitationService;
 
     @GetMapping
-    public Page<SolicitationDto> list(@RequestParam(required = false,defaultValue = "0") Integer page, @RequestParam(required = false,defaultValue = "10") Integer limit) {
-        return solicitationService.list(page,limit);
+    public Page<SolicitationDto> list(@RequestParam(required = false,defaultValue = "0") Integer page, @RequestParam(required = false,defaultValue = "10") Integer limit,@RequestParam(required = false) String name,@RequestParam(required = false) String description,@RequestParam(required = false) Boolean enabled,@RequestParam(required = false) String password,@RequestParam(required = false) String productName,@RequestParam(required = false) Integer askedAmount,@RequestParam(required = false) String username) {
+        return solicitationService.list(page,limit,name,description,enabled,password,productName,askedAmount,username);
     }
 
     @PostMapping

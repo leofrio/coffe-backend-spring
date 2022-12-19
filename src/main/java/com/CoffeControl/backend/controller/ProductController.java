@@ -42,8 +42,8 @@ public class ProductController {
     public ProductDto disable(@PathVariable("id") Integer id) throws Exception{
         return productService.disable(id);
     }
-    @GetMapping("/filter")
-    public List<ProductFilterDto> filter(ProductFilterForm form) {
+    @PostMapping("/filter")
+    public List<ProductFilterDto> filter(@RequestBody ProductFilterForm form) {
         return productService.filter(form);
     }
 

@@ -15,6 +15,7 @@ import com.CoffeControl.backend.repository.UserRepository;
 import com.CoffeControl.backend.service.SolicitationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -37,10 +39,18 @@ public class SolicitationServiceImpl implements SolicitationService {
     private ProductRepository productRepository;
 
     @Override
-    public Page<SolicitationDto> list(Integer page, Integer limit) {
+    public Page<SolicitationDto> list(Integer page,Integer limit,String name, String description,Boolean enabled, String password, String productName,  Integer askedAmount,  String username) {
         Pageable pagination= PageRequest.of(page,limit);
-        Page<Solicitation> solicitations = solicitationRepository.findAll(pagination);
-        return SolicitationDto.convert(solicitations);
+        if(name == null && description == null && enabled == null && password == null && productName == null && askedAmount == null && username == null) {
+            Page<Solicitation> solicitations = solicitationRepository.findAll(pagination);
+            return SolicitationDto.convert(solicitations);
+        }else {
+            List<Solicitation> solicitationList=solicitationRepository.filter(name,description,enabled,password,productName,askedAmount,username);
+            int start = (int) pagination.getOffset();
+            int end = Math.min((start + pagination.getPageSize()), solicitationList.size());
+            Page<Solicitation> solicitations=new PageImpl<Solicitation>(solicitationList.subList(start, end), pagination, solicitationList.size());
+            return SolicitationDto.convert(solicitations);
+        }
     }
 
     @Override

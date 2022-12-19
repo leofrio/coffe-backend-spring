@@ -75,6 +75,11 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<ProductFilterDto> filter(ProductFilterForm form) {
-        return productRepository.filter(form.getName(),form.getDescription(),form.getMinUserAmount(),form.getCurrentAmount(),form.getMinUserAmount(),form.getEnabled());
+        return productRepository.filter(form.getName(),
+                form.getDescription(),
+                form.getMinUserAmount(),
+                form.getCurrentAmount(),
+                form.getMinUserAmount(),
+                form.getEnabled());
     }
 }

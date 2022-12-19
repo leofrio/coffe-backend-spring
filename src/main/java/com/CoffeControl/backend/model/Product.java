@@ -1,5 +1,6 @@
 package com.CoffeControl.backend.model;
 
+import com.CoffeControl.backend.dto.ProductFilterDto;
 import com.CoffeControl.backend.form.ProductPostForm;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -7,8 +8,27 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.NamedNativeQuery;
 
 import java.util.List;
+
+@NamedNativeQuery(name = "Product.filter", query = "select p.id,p.product_name,p.description,p.min_user_amount,s.current_amount,s.min_amount,p.enabled  from products p " +
+        " inner join product_storage s on s.product_id =p.id " +
+        " where (lower(p.product_name)  like CONCAT(:name , '%')or :name is null ) and " +
+        " (lower(p.description) like CONCAT('%', :description , '%') or :description  is null) and " +
+        " (p.min_user_amount = :minUserAmount  or :minUserAmount is null) and "  +
+        " (p.enabled  = :enabled or :enabled is null) and " +
+        " (s.current_amount = :currentAmount or :currentAmount is null) and " +
+        " (s.min_amount = :minAmount or :minAmount is null);",resultSetMapping = "ProductFiltering")
+@SqlResultSetMapping(name = "ProductFiltering",classes = @ConstructorResult(targetClass = ProductFilterDto.class,columns = {
+        @ColumnResult(name = "id",type = Integer.class),
+        @ColumnResult(name = "product_name",type = String.class),
+        @ColumnResult(name = "description",type = String.class),
+        @ColumnResult(name = "min_user_amount",type = Integer.class),
+        @ColumnResult(name = "current_amount",type = Integer.class),
+        @ColumnResult(name = "min_amount",type = Integer.class),
+        @ColumnResult(name = "enabled",type = Boolean.class)
+}))
 
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Entity(name = "products")

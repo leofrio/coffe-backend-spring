@@ -1,7 +1,10 @@
 package com.CoffeControl.backend.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-
+import lombok.NoArgsConstructor;
+@AllArgsConstructor
+@NoArgsConstructor
 public class ProductFilterDto {
     @Getter
     private Integer id;
@@ -12,10 +15,10 @@ public class ProductFilterDto {
     @Getter
     private Integer minUserAmount;
     @Getter
+    private Integer currentAmount;
+    @Getter
+    private Integer minAmount;
+    @Getter
     private Boolean enabled;
-    @Getter
-    private Integer minAmount=1;
-    @Getter
-    private Integer currentAmount=0;
 
 }

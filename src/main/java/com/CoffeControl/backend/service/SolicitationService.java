@@ -10,8 +10,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 @Service
 public interface SolicitationService {
-    Page<SolicitationDto> list(Integer page, Integer limit);
-
+    Page<SolicitationDto> list(Integer page,Integer limit,String name, String description,Boolean enabled, String password, String productName,  Integer askedAmount,  String username);
     ResponseEntity<SolicitationDto> register(SolicitationPostForm form, UriComponentsBuilder uriBuilder) throws Exception;
 
     SolicitationDetailedDto getSpecificSolicitation(Integer id) throws Exception;
