@@ -24,7 +24,7 @@ public interface SolicitationRepository extends JpaRepository<Solicitation,Integ
                 " (u.pword = :password or :password is null)and " +
                 " (lower(p.product_name) like concat('%', :productName , '%')  or :productName is null) and " +
                 " (sp.asked_amount = :askedAmount  or :askedAmount is null) " +
-            " group by s.id ",nativeQuery = true)
+                " group by s.id ",nativeQuery = true)
     public List<Solicitation> filter(String name, String description, Boolean enabled, String password, String productName, Integer askedAmount, String username);
 
 }

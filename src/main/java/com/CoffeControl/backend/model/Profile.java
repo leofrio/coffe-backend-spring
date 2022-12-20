@@ -18,7 +18,7 @@ public class Profile {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @Getter @Setter
-    @Column(name = "full_name")
+    @Column(name = "profile_type")
     private String name;
     @Getter @Setter
     private String description;
