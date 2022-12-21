@@ -13,8 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.util.List;
-
 @RestController
 @RequestMapping(value = "/products")
 public class ProductController {
@@ -43,8 +41,8 @@ public class ProductController {
         return productService.disable(id);
     }
     @PostMapping("/filter")
-    public List<ProductFilterDto> filter(@RequestBody ProductFilterForm form) {
-        return productService.filter(form);
+    public Page<ProductFilterDto> filter(@RequestBody ProductFilterForm form,@RequestParam(required = false,defaultValue = "0") Integer page, @RequestParam(required = false,defaultValue = "10") Integer limit) {
+        return productService.filter(form,page,limit);
     }
 
 }

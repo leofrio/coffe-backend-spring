@@ -12,6 +12,7 @@ import com.CoffeControl.backend.service.ProductService;
 import com.CoffeControl.backend.service.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -74,12 +76,13 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductFilterDto> filter(ProductFilterForm form) {
-        return productRepository.filter(form.getName(),
-                form.getDescription(),
-                form.getMinUserAmount(),
-                form.getCurrentAmount(),
-                form.getMinUserAmount(),
-                form.getEnabled());
+    public Page<ProductFilterDto> filter(ProductFilterForm form,Integer page, Integer limit) {
+        List<ProductFilterDto> productsList=productRepository.filter(form.getName(), form.getDescription(), form.getMinUserAmount(), form.getCurrentAmount(), form.getMinUserAmount(), form.getEnabled());
+        Pageable pagination= PageRequest.of(page,limit);
+        int start = (int) pagination.getOffset();
+        int end = Math.min((start + pagination.getPageSize()), productsList.size());
+        if(start > productsList.size())
+            return new PageImpl<ProductFilterDto>(new ArrayList<>(), pagination, productsList.size());
+        return new PageImpl<ProductFilterDto>(productsList.subList(start, end), pagination, productsList.size());
     }
 }

@@ -10,8 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.util.List;
-
 @Service
 public interface ProductService {
     public ResponseEntity<ProductDto> update(Integer id, ProductUpdateForm form) throws Exception;
@@ -24,5 +22,5 @@ public interface ProductService {
 
     ProductDto disable(Integer id) throws Exception;
 
-    List<ProductFilterDto> filter(ProductFilterForm form);
+    Page<ProductFilterDto> filter(ProductFilterForm form,Integer page, Integer limit);
 }
