@@ -1,6 +1,5 @@
 package com.CoffeControl.backend.dto;
 
-import com.CoffeControl.backend.form.SolicitationProductForm;
 import com.CoffeControl.backend.model.Solicitation;
 import com.CoffeControl.backend.model.SolicitationProduct;
 import lombok.Getter;
@@ -18,13 +17,14 @@ public class SolicitationDetailedDto {
     @Getter @Setter
     private LocalDateTime solicitation_date;
     @Getter @Setter
-    private UserDto assignedUser;
-    @Getter @Setter
-    private List<ContributionDto> contributions;
-    @Getter @Setter
     private Boolean enabled;
     @Getter @Setter
-    private List<SolicitationProductForm> products;
+    private UserDto assignedUser;
+    @Getter @Setter
+    private List<SolicitationProductDto> products;
+    @Getter @Setter
+    private List<ContributionDto> contributions;
+
 
 
     public SolicitationDetailedDto(Solicitation s) {
@@ -34,7 +34,7 @@ public class SolicitationDetailedDto {
         this.assignedUser=new UserDto(s.getAssignedUser());
         this.contributions=s.getContributions().stream().map(ContributionDto::new).collect(Collectors.toList());
         this.enabled=s.getEnabled();
-        this.products=s.getProducts().stream().map(SolicitationProductForm::new).collect(Collectors.toList());
+        this.products=s.getProducts().stream().map(SolicitationProductDto::new).collect(Collectors.toList());
 
     }
     public SolicitationDetailedDto(SolicitationProduct s) {
@@ -44,6 +44,6 @@ public class SolicitationDetailedDto {
         this.assignedUser=new UserDto(s.getSolicitation().getAssignedUser());
         this.contributions=s.getSolicitation().getContributions().stream().map(ContributionDto::new).collect(Collectors.toList());
         this.enabled=s.getSolicitation().getEnabled();
-        this.products=s.getSolicitation().getProducts().stream().map(SolicitationProductForm::new).collect(Collectors.toList());
+        this.products=s.getSolicitation().getProducts().stream().map(SolicitationProductDto::new).collect(Collectors.toList());
     }
 }
