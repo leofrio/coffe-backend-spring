@@ -3,7 +3,9 @@ package com.CoffeControl.backend.controller;
 import com.CoffeControl.backend.dto.ContributionDto;
 import com.CoffeControl.backend.dto.UserDetailedDto;
 import com.CoffeControl.backend.dto.UserDto;
+import com.CoffeControl.backend.dto.UserFilterDto;
 import com.CoffeControl.backend.form.ContributionPostForm;
+import com.CoffeControl.backend.form.UserFilterForm;
 import com.CoffeControl.backend.form.UserPostForm;
 import com.CoffeControl.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/users")
@@ -34,5 +38,9 @@ public class UserController {
     @PostMapping("/{id}/addContribution")
     public ResponseEntity<ContributionDto> makeContribution(@PathVariable("id") Integer id, @RequestBody ContributionPostForm form, UriComponentsBuilder uriBuilder) throws Exception {
         return userService.newContribution(id,form,uriBuilder);
+    }
+    @PostMapping("/filter")
+    public List<UserFilterDto> filter(@RequestBody UserFilterForm form) {
+        return userService.filter(form);
     }
 }

@@ -3,8 +3,10 @@ package com.CoffeControl.backend.service.impl;
 import com.CoffeControl.backend.dto.ContributionDto;
 import com.CoffeControl.backend.dto.UserDetailedDto;
 import com.CoffeControl.backend.dto.UserDto;
+import com.CoffeControl.backend.dto.UserFilterDto;
 import com.CoffeControl.backend.form.ContributionPostForm;
 import com.CoffeControl.backend.form.ContributionProductForm;
+import com.CoffeControl.backend.form.UserFilterForm;
 import com.CoffeControl.backend.form.UserPostForm;
 import com.CoffeControl.backend.model.*;
 import com.CoffeControl.backend.model.compositeKey.ContributionProductId;
@@ -20,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -100,5 +103,10 @@ public class UserServiceImpl implements UserService {
         }
         URI uri= uriBuilder.path("contributions/{id}").buildAndExpand(contribution.getId()).toUri();
         return ResponseEntity.created(uri).body(new ContributionDto(contribution));
+    }
+
+    @Override
+    public List<UserFilterDto> filter(UserFilterForm form) {
+        return userRepository.filter(form.getName(),form.getRegistration(),form.getPassword(),form.getProfileType(),form.getAmountOfSolicitations(),form.getAmountOfContributions());
     }
 }
