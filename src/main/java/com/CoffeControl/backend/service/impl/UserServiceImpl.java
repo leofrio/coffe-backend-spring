@@ -12,6 +12,7 @@ import com.CoffeControl.backend.model.*;
 import com.CoffeControl.backend.model.compositeKey.ContributionProductId;
 import com.CoffeControl.backend.repository.*;
 import com.CoffeControl.backend.service.ContributionService;
+import com.CoffeControl.backend.service.SolicitationService;
 import com.CoffeControl.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -41,6 +42,8 @@ public class UserServiceImpl implements UserService {
     private ContributionService contributionService;
     @Autowired
     private SolicitationRepository solicitationRepository;
+    @Autowired
+    private SolicitationService solicitationService;
     @Autowired
     private ProductRepository productRepository;
     @Autowired
@@ -88,6 +91,7 @@ public class UserServiceImpl implements UserService {
         Contribution contribution= new Contribution(user,solicitation);
         contribution=contributionRepository.save(contribution);
         for(ContributionProductForm current : form.getProducts()) {
+            contribution.setProducts(contribution.getProducts() == null ? new ArrayList<ContributionProduct>() : contribution.getProducts());
             Integer productId=current.getProductId();
             Integer givenAmount=current.getGivenAmount();
             if(!solicitationProductRepository.checkIfProductExistsInSolicitation(solicitation.getId(),productId)) {
@@ -98,12 +102,15 @@ public class UserServiceImpl implements UserService {
             ContributionProduct contributionProduct=new ContributionProduct(contributionProductId,givenAmount);
             contributionProduct.setContribution(contribution);
             contributionProduct.setProduct(product);
-            contributionProductRepository.save(contributionProduct);
+            contributionProduct= contributionProductRepository.save(contributionProduct);
+            contribution.getProducts().add(contributionProduct);
             Storage storage=storageRepositoy.findByProductId(productId).get(0);
             storage.setCurrentAmount(storage.getCurrentAmount() + givenAmount);
             storageRepositoy.save(storage);
         }
+        contribution=contributionRepository.save(contribution);
         URI uri= uriBuilder.path("contributions/{id}").buildAndExpand(contribution.getId()).toUri();
+        solicitationService.checkIfFinished(solicitation.getId());
         return ResponseEntity.created(uri).body(new ContributionDto(contribution));
     }
 

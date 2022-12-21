@@ -3,15 +3,9 @@ package com.CoffeControl.backend.service.impl;
 import com.CoffeControl.backend.dto.SolicitationDetailedDto;
 import com.CoffeControl.backend.dto.SolicitationDto;
 import com.CoffeControl.backend.form.SolicitationPostForm;
-import com.CoffeControl.backend.model.Product;
-import com.CoffeControl.backend.model.Solicitation;
-import com.CoffeControl.backend.model.SolicitationProduct;
-import com.CoffeControl.backend.model.User;
+import com.CoffeControl.backend.model.*;
 import com.CoffeControl.backend.model.compositeKey.SolicitationProductId;
-import com.CoffeControl.backend.repository.ProductRepository;
-import com.CoffeControl.backend.repository.SolicitationProductRepository;
-import com.CoffeControl.backend.repository.SolicitationRepository;
-import com.CoffeControl.backend.repository.UserRepository;
+import com.CoffeControl.backend.repository.*;
 import com.CoffeControl.backend.service.SolicitationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -25,6 +19,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class SolicitationServiceImpl implements SolicitationService {
@@ -37,6 +32,8 @@ public class SolicitationServiceImpl implements SolicitationService {
     private SolicitationProductRepository solicitationProductRepository;
     @Autowired
     private ProductRepository productRepository;
+    @Autowired
+    private ContributionRepository contributionRepository;
 
     @Override
     public Page<SolicitationDto> list(Integer page,Integer limit,String name, String description,Boolean enabled, String password, String productName,  Integer askedAmount,  String username) {
@@ -70,6 +67,40 @@ public class SolicitationServiceImpl implements SolicitationService {
         }
         URI uri= uriBuilder.path("solications/{id}").buildAndExpand(solicitation.getId()).toUri();
         return ResponseEntity.created(uri).body(new SolicitationDto(solicitation));
+    }
+
+    @Override
+    public Boolean checkIfFinished(Integer solicitationId) throws Exception {
+       Solicitation solicitation= solicitationRepository.findById(solicitationId).orElseThrow(() -> new Exception("solicitation not found"));
+       List<Contribution> contributions=solicitation.getContributions();
+       Boolean finished=false;
+       for(SolicitationProduct currentProduct : solicitation.getProducts()) {
+           Integer requiredAmount=currentProduct.getAmountAsked();
+           Integer givenAmount=0;
+           for(Contribution currentContribution : solicitation.getContributions()) {
+               List<ContributionProduct> productGivenList=currentContribution.getProducts().stream().filter((ContributionProduct p) -> {
+                  return p.getProduct().getId() == currentProduct.getProduct().getId();
+               }).collect(Collectors.toList());
+               if(productGivenList.isEmpty()) {
+                   continue;
+               }
+               Integer individualAmount= productGivenList.get(0).getGivenAmount();
+               givenAmount += individualAmount;
+           }
+           if(givenAmount < requiredAmount) {
+               finished=false;
+               break;
+           }
+           finished=true;
+       }
+       if(finished) {
+           solicitation.setEnabled(false);
+           solicitationRepository.save(solicitation);
+           return true;
+       }
+       else {
+           return false;
+       }
     }
 
     @Override
