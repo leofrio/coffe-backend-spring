@@ -12,8 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.util.List;
-
 @Service
 public interface UserService {
     Page<UserDto> list(Integer page, Integer limit);
@@ -24,5 +22,5 @@ public interface UserService {
 
     ResponseEntity<ContributionDto> newContribution(Integer id, ContributionPostForm form, UriComponentsBuilder uriBuilder) throws Exception;
 
-    List<UserFilterDto> filter(UserFilterForm form);
+    Page<UserFilterDto> filter(UserFilterForm form,Integer page,Integer limit);
 }

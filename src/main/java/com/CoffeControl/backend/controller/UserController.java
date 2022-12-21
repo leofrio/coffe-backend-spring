@@ -14,8 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.util.List;
-
 @RestController
 @RequestMapping(value = "/users")
 public class UserController {
@@ -40,7 +38,7 @@ public class UserController {
         return userService.newContribution(id,form,uriBuilder);
     }
     @PostMapping("/filter")
-    public List<UserFilterDto> filter(@RequestBody UserFilterForm form) {
-        return userService.filter(form);
+    public Page<UserFilterDto> filter(@RequestBody UserFilterForm form, @RequestParam(required = false,defaultValue = "0") Integer page, @RequestParam(required = false,defaultValue = "10") Integer limit) {
+        return userService.filter(form,page,limit);
     }
 }

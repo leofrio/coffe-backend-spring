@@ -15,6 +15,7 @@ import com.CoffeControl.backend.service.ContributionService;
 import com.CoffeControl.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -106,7 +108,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserFilterDto> filter(UserFilterForm form) {
-        return userRepository.filter(form.getName(),form.getRegistration(),form.getPassword(),form.getProfileType(),form.getAmountOfSolicitations(),form.getAmountOfContributions());
+    public Page<UserFilterDto> filter(UserFilterForm form,Integer page,Integer limit) {
+        List<UserFilterDto> usersList=userRepository.filter(form.getName(),form.getRegistration(),form.getPassword(),form.getProfileType(),form.getAmountOfSolicitations(),form.getAmountOfContributions());
+        Pageable pagination= PageRequest.of(page,limit);
+        int start = (int) pagination.getOffset();
+        int end = Math.min((start + pagination.getPageSize()), usersList.size());
+        if(start > usersList.size())
+            return new PageImpl<UserFilterDto>(new ArrayList<>(), pagination, usersList.size());
+        return new PageImpl<UserFilterDto>(usersList.subList(start, end), pagination, usersList.size());
     }
 }
