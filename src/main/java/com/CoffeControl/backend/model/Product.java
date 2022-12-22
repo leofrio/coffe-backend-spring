@@ -14,8 +14,8 @@ import java.util.List;
 
 @NamedNativeQuery(name = "Product.filter", query = "select p.id,p.product_name,p.description,p.min_user_amount,s.current_amount,s.min_amount,p.enabled  from products p " +
         " inner join product_storage s on s.product_id =p.id " +
-        " where (lower(p.product_name)  like CONCAT(:name , '%')or :name is null ) and " +
-        " (lower(p.description) like CONCAT('%', :description , '%') or :description  is null) and " +
+        " where (lower(p.product_name)  like CONCAT( lower( :name ) , '%')or :name is null ) and " +
+        " (lower(p.description) like CONCAT('%', lower( :description ) , '%') or :description  is null) and " +
         " (p.min_user_amount = :minUserAmount  or :minUserAmount is null) and "  +
         " (p.enabled  = :enabled or :enabled is null) and " +
         " (s.current_amount = :currentAmount or :currentAmount is null) and " +

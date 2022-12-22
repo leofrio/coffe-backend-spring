@@ -24,10 +24,10 @@ import java.util.List;
         "inner join profiles pf on  " +
         " pf.id = u.profile_id  " +
         "where  " +
-        " (u.full_name like concat('%', :name , '%')  " +
+        " (lower(u.full_name) like concat('%', lower( :name ) , '%')  " +
         "  or :name is null)  " +
         " and    " +
-        "   (pf.profile_type like concat('%', :profileType , '%')  " +
+        "   (lower(pf.profile_type) like concat('%',lower( :profileType ) , '%')  " +
         "  or :profileType is null)  " +
         " and   " +
         "   (u.registration like concat( :registration , '%')  " +
