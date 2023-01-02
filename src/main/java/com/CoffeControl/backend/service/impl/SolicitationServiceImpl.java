@@ -52,7 +52,7 @@ public class SolicitationServiceImpl implements SolicitationService {
 
     @Override
     public ResponseEntity<SolicitationDto> register(SolicitationPostForm form, UriComponentsBuilder uriBuilder) throws Exception {
-        User user= Optional.of(userRepository.findByName(form.getUsername()).get(0)).orElseThrow(() -> new Exception("user not found"));
+        User user= Optional.of(userRepository.findByName(form.getUsername()).get()).orElseThrow(() -> new Exception("user not found"));
         Solicitation solicitation = new Solicitation(form,user);
         solicitation= solicitationRepository.save(solicitation);
         for(int i =0; i < form.getProducts().length;i++) {

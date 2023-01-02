@@ -14,29 +14,23 @@ import java.util.List;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Entity(name = "solicitations")
 @NoArgsConstructor
+@Getter @Setter
 public class Solicitation {
-    @Getter
-    @Setter
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @Getter @Setter
     @Column(name = "solicitation_name")
     private String name;
-    @Getter @Setter
     private LocalDateTime solicitation_date=LocalDateTime.now();
-    @Getter @Setter
+    private LocalDateTime solicitation_expiration;
     private Boolean enabled=true;
-    @Getter @Setter
     @ManyToOne
     @JoinColumn(name = "assigned_user_id")
     @JsonBackReference
     private User assignedUser;
-    @Getter @Setter
     @OneToMany(mappedBy = "solicitation")
     @JsonManagedReference
     private List<Contribution> contributions;
-    @Getter @Setter
     @OneToMany(mappedBy = "solicitation")
     @JsonManagedReference
     private List<SolicitationProduct> products;
@@ -45,5 +39,6 @@ public class Solicitation {
     public Solicitation(SolicitationPostForm form, User user) {
         this.name= form.getName();
         this.assignedUser=user;
+        this.solicitation_expiration = this.solicitation_date.plusDays(getSolicitation_date().getMonth().maxLength());
     }
 }

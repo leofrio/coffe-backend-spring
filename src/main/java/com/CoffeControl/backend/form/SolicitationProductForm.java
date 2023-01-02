@@ -7,10 +7,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 @NoArgsConstructor
+@Getter @Setter
 public class SolicitationProductForm {
-    @Getter @Setter @NotEmpty @NotNull
+    @NotEmpty @NotNull
     private Integer productId;
-    @Getter @Setter @NotNull @NotEmpty
+    @NotNull @NotEmpty
     private Integer requiredAmount;
 
     public SolicitationProductForm(Integer productId, Integer requiredAmount) {
@@ -21,5 +22,4 @@ public class SolicitationProductForm {
         this.productId = sp.getId().getProductId();
         this.requiredAmount = sp.getAmountAsked();
     }
-
 }

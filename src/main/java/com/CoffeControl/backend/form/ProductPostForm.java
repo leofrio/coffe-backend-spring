@@ -6,20 +6,16 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 
+@Getter @Setter
 public class ProductPostForm {
-    @Getter @Setter
     @NotNull @NotEmpty
     private String name;
-    @Getter @Setter
     @NotNull @NotEmpty @Length(min = 3)
     private String description;
-    @Getter @Setter
     @NotNull @NotEmpty
     private Integer minUserAmount;
-    @Getter @Setter
     private Boolean enabled=false;
-    @Getter @Setter @NotNull @NotEmpty
+    @NotNull @NotEmpty
     private Integer minAmount=1;
-    @Getter @Setter
     private Integer currentAmount=0;
 }
