@@ -20,6 +20,8 @@ public class SolicitationDto {
     @Getter @Setter
     private LocalDateTime solicitation_date;
     @Getter @Setter
+    private LocalDateTime solicitation_expiration;
+    @Getter @Setter
     private Integer assigned_User_Id;
     @Getter @Setter
     private Boolean enabled;
@@ -30,6 +32,7 @@ public class SolicitationDto {
         this.id = s.getId();
         this.name = s.getName();
         this.solicitation_date = s.getSolicitation_date();
+        this.solicitation_expiration=s.getSolicitation_expiration();
         this.assigned_User_Id=s.getAssignedUser().getId();
         this.enabled=s.getEnabled();
         this.products= s.getProducts() != null ?  s.getProducts().stream().map(SolicitationProductForm::new).collect(Collectors.toList()) : new ArrayList<SolicitationProductForm>();
@@ -39,6 +42,7 @@ public class SolicitationDto {
         this.id = s.getSolicitation().getId();
         this.name = s.getSolicitation().getName();
         this.solicitation_date = s.getSolicitation().getSolicitation_date();
+        this.solicitation_expiration=s.getSolicitation().getSolicitation_expiration();
         this.assigned_User_Id=s.getSolicitation().getAssignedUser().getId();
         this.enabled=s.getSolicitation().getEnabled();
         this.products= s.getSolicitation().getProducts() != null ?  s.getSolicitation().getProducts().stream().map(SolicitationProductForm::new).collect(Collectors.toList()) : new ArrayList<SolicitationProductForm>();

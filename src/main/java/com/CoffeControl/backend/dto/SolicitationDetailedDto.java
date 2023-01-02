@@ -17,6 +17,8 @@ public class SolicitationDetailedDto {
     @Getter @Setter
     private LocalDateTime solicitation_date;
     @Getter @Setter
+    private LocalDateTime solicitation_expiration;
+    @Getter @Setter
     private Boolean enabled;
     @Getter @Setter
     private UserDto assignedUser;
@@ -31,6 +33,7 @@ public class SolicitationDetailedDto {
         this.id = s.getId();
         this.name = s.getName();
         this.solicitation_date = s.getSolicitation_date();
+        this.solicitation_expiration=s.getSolicitation_expiration();
         this.assignedUser=new UserDto(s.getAssignedUser());
         this.contributions=s.getContributions().stream().map(ContributionDto::new).collect(Collectors.toList());
         this.enabled=s.getEnabled();
@@ -41,6 +44,7 @@ public class SolicitationDetailedDto {
         this.id = s.getSolicitation().getId();
         this.name = s.getSolicitation().getName();
         this.solicitation_date = s.getSolicitation().getSolicitation_date();
+        this.solicitation_expiration=s.getSolicitation().getSolicitation_expiration();
         this.assignedUser=new UserDto(s.getSolicitation().getAssignedUser());
         this.contributions=s.getSolicitation().getContributions().stream().map(ContributionDto::new).collect(Collectors.toList());
         this.enabled=s.getSolicitation().getEnabled();

@@ -23,6 +23,7 @@ public class Solicitation {
     private String name;
     private LocalDateTime solicitation_date=LocalDateTime.now();
     private LocalDateTime solicitation_expiration;
+
     private Boolean enabled=true;
     @ManyToOne
     @JoinColumn(name = "assigned_user_id")
