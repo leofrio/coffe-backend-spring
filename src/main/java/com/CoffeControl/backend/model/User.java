@@ -9,11 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.NamedNativeQuery;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
 import java.util.List;
 @NamedNativeQuery(name = "User.filter", query = "select " +
         " u.id,  " +
@@ -56,7 +52,7 @@ import java.util.List;
 }))
 @Entity(name = "users")
 @NoArgsConstructor
-public class User implements UserDetails {
+public class User {
     @Getter @Setter
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -87,36 +83,5 @@ public class User implements UserDetails {
         this.registration = registration;
         this.password = password;
         this.profile = profile;
-    }
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(profile.getName()));
-    }
-
-    @Override
-    public String getUsername() {
-        return this.registration;
-    }
-
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
     }
 }
