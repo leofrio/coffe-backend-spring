@@ -18,8 +18,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class SolicitationServiceImpl implements SolicitationService {
@@ -78,14 +78,28 @@ public class SolicitationServiceImpl implements SolicitationService {
            Integer requiredAmount=currentProduct.getAmountAsked();
            Integer givenAmount=0;
            for(Contribution currentContribution : solicitation.getContributions()) {
-               List<ContributionProduct> productGivenList=currentContribution.getProducts().stream().filter((ContributionProduct p) -> {
-                  return p.getProduct().getId() == currentProduct.getProduct().getId();
-               }).collect(Collectors.toList());
+               List<ContributionProduct> productGivenList= currentContribution.getProducts().stream().filter((ContributionProduct p) ->
+                       Objects.equals(p.getProduct().getId(), currentProduct.getProduct().getId())
+               ).toList();
                if(productGivenList.isEmpty()) {
                    continue;
                }
                Integer individualAmount= productGivenList.get(0).getGivenAmount();
                givenAmount += individualAmount;
+
+               solicitation.getProducts().forEach(x-> {
+                   System.out.println("kldsmasda");
+               });
+
+//               if(currentContribution.getProducts().stream().anyMatch(p -> Objects.equals(p.getProduct().getId(), currentProduct.getProduct().getId()))) {
+//                   int value = currentContribution.getProducts().stream()
+//                           .filter(p -> Objects.equals(p.getProduct().getId(), currentProduct.getProduct().getId()))
+//                           .findFirst()
+//                           .map(ContributionProduct::getGivenAmount).get();
+//                   givenAmount += individualAmount;
+//               }
+
+
            }
            if(givenAmount < requiredAmount) {
                finished=false;

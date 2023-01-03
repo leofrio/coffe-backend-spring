@@ -64,14 +64,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDetailedDto getSpecificUser(Integer id) throws Exception {
         User user= userRepository.findById(id).orElseThrow(() -> new Exception("user not found"));
-        System.out.println("user ");
-        System.out.println("id :" + user.getId());
-        System.out.println("name :" + user.getName());
-        System.out.println("registration :" + user.getRegistration());
-        System.out.println("password :" + user.getPassword());
-        System.out.println("profile_name :" + user.getProfile().getName());
-        System.out.println("solicitations :" + user.getSolicitations());
-        System.out.println("contributions :" + user.getContributions());
         return new UserDetailedDto(user);
     }
 
