@@ -74,23 +74,13 @@ public class SolicitationServiceImpl implements SolicitationService {
            Integer requiredAmount=currentProduct.getAmountAsked();
            Integer givenAmount=0;
            for(Contribution currentContribution : solicitation.getContributions()) {
-               List<ContributionProduct> productGivenList= currentContribution.getProducts().stream().filter((ContributionProduct p) ->
-                       Objects.equals(p.getProduct().getId(), currentProduct.getProduct().getId())
-               ).toList();
-               if(productGivenList.isEmpty()) {
-                   continue;
+               if(currentContribution.getProducts().stream().anyMatch(p -> Objects.equals(p.getProduct().getId(), currentProduct.getProduct().getId()))) {
+                   int value = currentContribution.getProducts().stream()
+                           .filter(p -> Objects.equals(p.getProduct().getId(), currentProduct.getProduct().getId()))
+                           .findFirst()
+                           .map(ContributionProduct::getGivenAmount).get();
+                   givenAmount += value;
                }
-               Integer individualAmount= productGivenList.get(0).getGivenAmount();
-               givenAmount += individualAmount;
-
-
-//               if(currentContribution.getProducts().stream().anyMatch(p -> Objects.equals(p.getProduct().getId(), currentProduct.getProduct().getId()))) {
-//                   int value = currentContribution.getProducts().stream()
-//                           .filter(p -> Objects.equals(p.getProduct().getId(), currentProduct.getProduct().getId()))
-//                           .findFirst()
-//                           .map(ContributionProduct::getGivenAmount).get();
-//                   givenAmount += value;
-//               }
 
 
            }

@@ -5,9 +5,11 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 public class ContributionPostForm {
     @Getter @Setter @NotEmpty @NotNull
     private Integer solicitationId;
     @Getter @Setter @NotEmpty @NotNull
-    private ContributionProductForm[] products;
+    private List<ContributionProductForm> products;
 }

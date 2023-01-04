@@ -95,7 +95,8 @@ public class UserServiceImpl implements UserService {
             Storage storage=storageRepositoy.findByProductId(productId).get(0);
             storage.setCurrentAmount(storage.getCurrentAmount() + givenAmount);
             storageRepositoy.save(storage);
-        }
+        } 
+
         contribution=contributionRepository.save(contribution);
         solicitationService.checkIfFinished(solicitation.getId());
         return new ContributionDto(contribution);
