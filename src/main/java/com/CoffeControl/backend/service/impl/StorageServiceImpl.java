@@ -66,13 +66,6 @@ public class StorageServiceImpl implements StorageService {
     public StorageDetailedDto getByProductId(Integer product_id) throws Exception {
         Optional<Storage> optionalStorage= Optional.of(storageRepositoy.findByProductId(product_id).get(0));
         Storage storage =optionalStorage.orElseThrow(() ->  new Exception("no product found"));
-        System.out.println("storage :");
-        System.out.println("id :" +storage.getId());
-        System.out.println("current amount :" +storage.getCurrentAmount());
-        System.out.println("min amount :" +storage.getMinAmount());
-        System.out.println("product_id : " +storage.getProduct().getId());
-        System.out.println("product_name: :" +storage.getProduct().getName());
-        System.out.println("product_minUseramount : " +storage.getProduct().getMinUserAmount());
         return new StorageDetailedDto(storage);
     }
 

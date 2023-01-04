@@ -33,9 +33,7 @@ public class ContributionServiceImpl implements ContributionService {
     public String delete(Integer id) throws Exception {
         Contribution contribution=contributionRepository.findById(id).orElseThrow(() -> new Exception("contribution not found"));
         Solicitation solicitation=solicitationRepository.findById(contribution.getSolicitation().getId()).orElseThrow(() -> new Exception("soliicitation not found"));
-        System.out.println(solicitation.getContributions().size());
         solicitation.getContributions().removeIf(c -> c.getId() == id);
-        System.out.println(solicitation.getContributions().size());
         solicitationRepository.save(solicitation);
         contributionRepository.deleteById(id);
         return "contribution " +id + " deleted" ;
