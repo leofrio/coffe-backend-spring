@@ -89,7 +89,7 @@ public class SolicitationServiceImpl implements SolicitationService {
 //                           .filter(p -> Objects.equals(p.getProduct().getId(), currentProduct.getProduct().getId()))
 //                           .findFirst()
 //                           .map(ContributionProduct::getGivenAmount).get();
-//                   givenAmount += individualAmount;
+//                   givenAmount += value;
 //               }
 
 
@@ -106,6 +106,8 @@ public class SolicitationServiceImpl implements SolicitationService {
            return true;
        }
        else {
+           solicitation.setEnabled(true);
+           solicitationRepository.save(solicitation);
            return false;
        }
     }

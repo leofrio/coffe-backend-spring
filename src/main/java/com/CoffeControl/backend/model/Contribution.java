@@ -35,7 +35,7 @@ public class Contribution {
     @JsonBackReference
     private Solicitation solicitation;
     @Getter @Setter
-    @OneToMany(mappedBy = "contribution")
+    @OneToMany(cascade = CascadeType.ALL,mappedBy = "contribution")
     @JsonManagedReference
     private List<ContributionProduct> products;
 

@@ -1,17 +1,22 @@
 package com.CoffeControl.backend.service.impl;
 
 import com.CoffeControl.backend.dto.ContributionDto;
-import com.CoffeControl.backend.model.Contribution;
-import com.CoffeControl.backend.model.Solicitation;
+import com.CoffeControl.backend.model.*;
 import com.CoffeControl.backend.repository.ContributionProductRepository;
 import com.CoffeControl.backend.repository.ContributionRepository;
 import com.CoffeControl.backend.repository.SolicitationRepository;
+import com.CoffeControl.backend.repository.StorageRepositoy;
 import com.CoffeControl.backend.service.ContributionService;
+import com.CoffeControl.backend.service.SolicitationService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Objects;
 
 @Service
 public class ContributionServiceImpl implements ContributionService {
@@ -21,6 +26,10 @@ public class ContributionServiceImpl implements ContributionService {
     private SolicitationRepository solicitationRepository;
     @Autowired
     private ContributionProductRepository contributionProductRepository;
+    @Autowired
+    private SolicitationService solicitationService;
+    @Autowired
+    private StorageRepositoy storageRepositoy;
 
     @Override
     public Page<ContributionDto> list(Integer page, Integer limit) {
@@ -30,12 +39,25 @@ public class ContributionServiceImpl implements ContributionService {
     }
 
     @Override
+    @Transactional
     public String delete(Integer id) throws Exception {
         Contribution contribution=contributionRepository.findById(id).orElseThrow(() -> new Exception("contribution not found"));
         Solicitation solicitation=solicitationRepository.findById(contribution.getSolicitation().getId()).orElseThrow(() -> new Exception("soliicitation not found"));
-        solicitation.getContributions().removeIf(c -> c.getId() == id);
+        solicitation.getContributions().removeIf(c -> Objects.equals(c.getId(), id));
+        List<ContributionProduct> previousProducts=contributionProductRepository.findByContributionId(contribution.getId());
         solicitationRepository.save(solicitation);
+        solicitationService.checkIfFinished(solicitation.getId());
         contributionRepository.deleteById(id);
+        solicitation.getProducts().stream().map(SolicitationProduct::getProduct).map(Product::getId).forEach(pid ->{
+            Storage s=storageRepositoy.findByProductId(pid).stream().findFirst().get();
+            Integer value= contribution.getProducts().stream()
+                    .filter(cp -> Objects.equals(cp.getId().getProductId(), pid))
+                    .findFirst()
+                    .map(ContributionProduct::getGivenAmount).get();
+            s.setCurrentAmount(s.getCurrentAmount() - value);
+            storageRepositoy.save(s);
+        });
+
         return "contribution " +id + " deleted" ;
     }
 }

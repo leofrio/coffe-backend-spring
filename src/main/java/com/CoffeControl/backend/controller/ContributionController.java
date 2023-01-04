@@ -1,12 +1,9 @@
 package com.CoffeControl.backend.controller;
 
 import com.CoffeControl.backend.dto.ContributionDto;
-import com.CoffeControl.backend.dto.StorageDto;
 import com.CoffeControl.backend.service.ContributionService;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -20,7 +17,6 @@ public class ContributionController {
         return contributionService.list(page,limit);
     }
     @DeleteMapping("/{id}")
-    @Transactional
     public String deleteStorage(@PathVariable("id") Integer id) throws Exception {
         return contributionService.delete(id);
     }
