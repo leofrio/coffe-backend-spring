@@ -8,9 +8,7 @@ import com.CoffeControl.backend.form.ContributionPostForm;
 import com.CoffeControl.backend.form.UserFilterForm;
 import com.CoffeControl.backend.form.UserPostForm;
 import org.springframework.data.domain.Page;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.util.UriComponentsBuilder;
 
 @Service
 public interface UserService {
@@ -18,9 +16,9 @@ public interface UserService {
 
     UserDetailedDto getSpecificUser(Integer id) throws Exception;
 
-    ResponseEntity<UserDto> register(UserPostForm form, UriComponentsBuilder uriBuilder);
+    UserDto register(UserPostForm form);
 
-    ResponseEntity<ContributionDto> newContribution(Integer id, ContributionPostForm form, UriComponentsBuilder uriBuilder) throws Exception;
+    ContributionDto newContribution(Integer id, ContributionPostForm form) throws Exception;
 
     Page<UserFilterDto> filter(UserFilterForm form,Integer page,Integer limit);
 }

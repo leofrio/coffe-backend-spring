@@ -10,9 +10,8 @@ import com.CoffeControl.backend.form.UserPostForm;
 import com.CoffeControl.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
 @RequestMapping(value = "/users")
@@ -30,12 +29,13 @@ public class UserController {
         return userService.getSpecificUser(id);
     }
     @PostMapping
-    public ResponseEntity<UserDto> register(@RequestBody UserPostForm form,UriComponentsBuilder uriBuilder) {
-        return userService.register(form,uriBuilder);
+    public UserDto register(@RequestBody UserPostForm form) {
+        return userService.register(form);
     }
     @PostMapping("/{id}/addContribution")
-    public ResponseEntity<ContributionDto> makeContribution(@PathVariable("id") Integer id, @RequestBody ContributionPostForm form, UriComponentsBuilder uriBuilder) throws Exception {
-        return userService.newContribution(id,form,uriBuilder);
+    @ResponseStatus(code = HttpStatus.CREATED)
+    public ContributionDto makeContribution(@PathVariable("id") Integer id, @RequestBody ContributionPostForm form) throws Exception {
+        return userService.newContribution(id,form);
     }
     @PostMapping("/filter")
     public Page<UserFilterDto> filter(@RequestBody UserFilterForm form, @RequestParam(required = false,defaultValue = "0") Integer page, @RequestParam(required = false,defaultValue = "10") Integer limit) {

@@ -18,11 +18,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.util.UriComponentsBuilder;
 
-import java.net.URI;
 import java.util.Optional;
 
 @Service
@@ -45,11 +42,10 @@ public class StorageServiceImpl implements StorageService {
     }
 
     @Override
-    public ResponseEntity<Storage> insertNewProduct(Product p, ProductPostForm form, UriComponentsBuilder uriBuilder) {
+    public Storage insertNewProduct(Product p, ProductPostForm form) {
         Storage storage =new Storage(p,form);
         storageRepositoy.save(storage);
-        URI uri= uriBuilder.path("storage/{id}").buildAndExpand(storage.getId()).toUri();
-        return ResponseEntity.created(uri).body(storage);
+        return storage;
     }
 
     @Override
@@ -94,16 +90,16 @@ public class StorageServiceImpl implements StorageService {
     }
 
     @Override
-    public ResponseEntity<StorageDto> deleteStorage(Integer id) throws Exception {
+    public StorageDto deleteStorage(Integer id) throws Exception {
         Storage storage= storageRepositoy.findById(id).orElseThrow(() -> new Exception("no storage found"));
         storageRepositoy.deleteById(id);
         productRepository.deleteById(storage.getProduct().getId());
 
-        return ResponseEntity.status(204).body(new StorageDto(storage));
+        return new StorageDto(storage);
     }
 
     @Override
-    public ResponseEntity<StorageDetailedDto> updateStorage(Integer id, StorageUpdateForm form) throws Exception {
+    public StorageDetailedDto updateStorage(Integer id, StorageUpdateForm form) throws Exception {
         Storage storage=storageRepositoy.findById(id).orElseThrow(() -> new Exception("storage not found"));
         Product product =productRepository.findById(storage.getProduct().getId()).orElseThrow(() -> new Exception("product not found"));
         product.setName(form.getName() != null ? form.getName() :  product.getName());
@@ -114,7 +110,7 @@ public class StorageServiceImpl implements StorageService {
         storage.setMinAmount(form.getMinAmount() != null ? form.getMinAmount() : storage.getMinAmount());
         productRepository.save(product);
         storageRepositoy.save(storage);
-        return ResponseEntity.ok(new StorageDetailedDto(storage));
+        return new StorageDetailedDto(storage);
     }
 
     @Override

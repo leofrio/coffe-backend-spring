@@ -9,9 +9,8 @@ import com.CoffeControl.backend.service.ProductService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
 @RequestMapping(value = "/products")
@@ -25,11 +24,12 @@ public class ProductController {
         return productService.list(page,limit);
     }
     @PostMapping
-    public ResponseEntity<ProductDto> register(@RequestBody  ProductPostForm form, UriComponentsBuilder uriBuilder) {
-        return productService.register(form,uriBuilder);
+    @ResponseStatus(code = HttpStatus.CREATED)
+    public ProductDto register(@RequestBody  ProductPostForm form) {
+        return productService.register(form);
     }
     @PutMapping("/{id}")
-    public ResponseEntity<ProductDto> update(@PathVariable("id") Integer id,@RequestBody @NotNull ProductUpdateForm form) throws Exception {
+    public ProductDto update(@PathVariable("id") Integer id,@RequestBody @NotNull ProductUpdateForm form) throws Exception {
         return productService.update(id,form);
     }
     @GetMapping("/{id}/enable")

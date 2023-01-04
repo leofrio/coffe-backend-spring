@@ -6,9 +6,8 @@ import com.CoffeControl.backend.form.SolicitationPostForm;
 import com.CoffeControl.backend.service.SolicitationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
 @RequestMapping(value = "/solicitations")
@@ -22,8 +21,9 @@ public class SolicitationController {
     }
 
     @PostMapping
-    public ResponseEntity<SolicitationDto> newSolicitation(@RequestBody SolicitationPostForm form, UriComponentsBuilder uriBuilder) throws Exception {
-        return solicitationService.register(form,uriBuilder);
+    @ResponseStatus(code = HttpStatus.CREATED)
+    public SolicitationDto newSolicitation(@RequestBody SolicitationPostForm form) throws Exception {
+        return solicitationService.register(form);
     }
     @GetMapping("/{id}")
     public SolicitationDetailedDto getSpecificSolicitation(@PathVariable("id") Integer id) throws Exception {

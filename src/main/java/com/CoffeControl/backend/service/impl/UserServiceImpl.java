@@ -19,11 +19,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.util.UriComponentsBuilder;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,16 +65,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<UserDto> register(UserPostForm form, UriComponentsBuilder uriBuilder) {
+    public UserDto register(UserPostForm form) {
         Profile profile=profileRepository.findByName(form.getProfile_type()).get(0);
         User user = new User(form.getName(),form.getRegistration(),form.getPassword(),profile);
         userRepository.save(user);
-        URI uri= uriBuilder.path("users/{id}").buildAndExpand(user.getId()).toUri();
-        return ResponseEntity.created(uri).body(new UserDto(user));
+        return new UserDto(user);
     }
 
     @Override
-    public ResponseEntity<ContributionDto> newContribution(Integer id, ContributionPostForm form, UriComponentsBuilder uriBuilder) throws Exception {
+    public ContributionDto newContribution(Integer id, ContributionPostForm form) throws Exception {
         Solicitation solicitation=solicitationRepository.findById(form.getSolicitationId()).orElseThrow(() -> new Exception("no solicitation found with that id"));
         User user = userRepository.findById(id).orElseThrow(() -> new Exception("no user found with that id"));
         Contribution contribution= new Contribution(user,solicitation);
@@ -101,9 +97,8 @@ public class UserServiceImpl implements UserService {
             storageRepositoy.save(storage);
         }
         contribution=contributionRepository.save(contribution);
-        URI uri= uriBuilder.path("contributions/{id}").buildAndExpand(contribution.getId()).toUri();
         solicitationService.checkIfFinished(solicitation.getId());
-        return ResponseEntity.created(uri).body(new ContributionDto(contribution));
+        return new ContributionDto(contribution);
     }
 
     @Override

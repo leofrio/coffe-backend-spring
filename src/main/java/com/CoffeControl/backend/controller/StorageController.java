@@ -10,7 +10,6 @@ import com.CoffeControl.backend.service.StorageService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -40,11 +39,11 @@ public class StorageController {
     }
     @DeleteMapping("/{id}")
     @Transactional
-    public ResponseEntity<StorageDto> deleteStorage(@PathVariable("id") Integer id) throws Exception {
+    public StorageDto deleteStorage(@PathVariable("id") Integer id) throws Exception {
         return storageService.deleteStorage(id);
     }
     @PutMapping("/{id}")
-    public ResponseEntity<StorageDetailedDto> updateStorage(@PathVariable("id") Integer id,@RequestBody StorageUpdateForm form) throws Exception {
+    public StorageDetailedDto updateStorage(@PathVariable("id") Integer id,@RequestBody StorageUpdateForm form) throws Exception {
        return  storageService.updateStorage(id,form);
     }
     @GetMapping("/productName/{name}")

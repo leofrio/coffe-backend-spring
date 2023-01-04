@@ -15,11 +15,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.util.UriComponentsBuilder;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,14 +30,14 @@ public class ProductServiceImpl implements ProductService {
     private StorageService storageService;
 
     @Override
-    public ResponseEntity<ProductDto> update(Integer id, ProductUpdateForm form) throws Exception {
+    public ProductDto update(Integer id, ProductUpdateForm form) throws Exception {
         Product product = productRepository.findById(id).orElseThrow(() -> new Exception("product not found"));
         product.setName(form.getName() != null ? form.getName() :  product.getName());
         product.setDescription(form.getDescription() != null ? form.getDescription() :  product.getDescription());
         product.setEnabled(form.getEnabled() != null ? form.getEnabled() :  product.getEnabled());
         product.setMinUserAmount(form.getMinUserAmount() != null ? form.getMinUserAmount() :  product.getMinUserAmount());
         productRepository.save(product);
-        return ResponseEntity.ok(new ProductDto(product));
+        return new ProductDto(product);
     }
 
     @Override
@@ -51,12 +48,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ResponseEntity<ProductDto> register(ProductPostForm form, UriComponentsBuilder uriBuilder) {
+    public ProductDto register(ProductPostForm form) {
         Product product =new Product(form);
         product=productRepository.save(product);
-        storageService.insertNewProduct(product,form,UriComponentsBuilder.newInstance());
-        URI uri= uriBuilder.path("products/{id}").buildAndExpand(product.getId()).toUri();
-        return ResponseEntity.created(uri).body(new ProductDto(product));
+        storageService.insertNewProduct(product,form);
+        return new ProductDto(product);
     }
 
     @Override
