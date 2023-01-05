@@ -8,7 +8,7 @@ import com.CoffeControl.backend.form.ProductPostForm;
 import com.CoffeControl.backend.form.ProductUpdateForm;
 import com.CoffeControl.backend.model.Product;
 import com.CoffeControl.backend.repository.ProductRepository;
-import com.CoffeControl.backend.repository.StorageRepositoy;
+import com.CoffeControl.backend.repository.StorageRepository;
 import com.CoffeControl.backend.service.ProductService;
 import com.CoffeControl.backend.service.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +27,7 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     private ProductRepository productRepository;
     @Autowired
-    private StorageRepositoy storageRepositoy;
+    private StorageRepository storageRepository;
     @Autowired
     private StorageService storageService;
 

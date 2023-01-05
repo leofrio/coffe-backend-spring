@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private SolicitationProductRepository solicitationProductRepository;
     @Autowired
-    private StorageRepositoy storageRepositoy;
+    private StorageRepository storageRepository;
 
 
     @Override
@@ -87,16 +87,16 @@ public class UserServiceImpl implements UserService {
             if(!solicitationProductRepository.checkIfProductExistsInSolicitation(solicitation.getId(),productId)) {
                 continue;
             }
-            Product product=productRepository.findById(productId).orElseThrow(() -> new Exception("no product found with id: " +productId));
+            Product product=productRepository.findById(productId).orElseThrow(() -> new GenericException("PRODUCT NOT FOUND!", "Product with id " + productId + " not found during the creation of contribution!", HttpStatus.BAD_REQUEST));
             ContributionProductId contributionProductId=new ContributionProductId(contribution.getId(), productId);
             ContributionProduct contributionProduct=new ContributionProduct(contributionProductId,givenAmount);
             contributionProduct.setContribution(contribution);
             contributionProduct.setProduct(product);
             contributionProduct= contributionProductRepository.save(contributionProduct);
             contribution.getProducts().add(contributionProduct);
-            Storage storage=storageRepositoy.findByProductId(productId).get(0);
+            Storage storage= storageRepository.findByProductId(productId).get(0);
             storage.setCurrentAmount(storage.getCurrentAmount() + givenAmount);
-            storageRepositoy.save(storage);
+            storageRepository.save(storage);
         } 
 
         contribution=contributionRepository.save(contribution);

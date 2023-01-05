@@ -6,7 +6,7 @@ import com.CoffeControl.backend.model.*;
 import com.CoffeControl.backend.repository.ContributionProductRepository;
 import com.CoffeControl.backend.repository.ContributionRepository;
 import com.CoffeControl.backend.repository.SolicitationRepository;
-import com.CoffeControl.backend.repository.StorageRepositoy;
+import com.CoffeControl.backend.repository.StorageRepository;
 import com.CoffeControl.backend.service.ContributionService;
 import com.CoffeControl.backend.service.SolicitationService;
 import jakarta.transaction.Transactional;
@@ -17,7 +17,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -31,7 +30,7 @@ public class ContributionServiceImpl implements ContributionService {
     @Autowired
     private SolicitationService solicitationService;
     @Autowired
-    private StorageRepositoy storageRepositoy;
+    private StorageRepository storageRepository;
 
     @Override
     public Page<ContributionDto> list(Integer page, Integer limit) {
@@ -51,13 +50,13 @@ public class ContributionServiceImpl implements ContributionService {
         solicitationService.checkIfFinished(solicitation.getId());
         contributionRepository.deleteById(id);
         solicitation.getProducts().stream().map(SolicitationProduct::getProduct).map(Product::getId).forEach(pid ->{
-            Storage s=storageRepositoy.findByProductId(pid).stream().findFirst().get();
+            Storage s= storageRepository.findByProductId(pid).stream().findFirst().get();
             Integer value= contribution.getProducts().stream()
                     .filter(cp -> Objects.equals(cp.getId().getProductId(), pid))
                     .findFirst()
                     .map(ContributionProduct::getGivenAmount).get();
             s.setCurrentAmount(s.getCurrentAmount() - value);
-            storageRepositoy.save(s);
+            storageRepository.save(s);
         });
 
         return "contribution " +id + " deleted" ;
