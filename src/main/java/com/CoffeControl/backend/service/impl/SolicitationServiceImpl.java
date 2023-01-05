@@ -2,6 +2,7 @@ package com.CoffeControl.backend.service.impl;
 
 import com.CoffeControl.backend.dto.SolicitationDetailedDto;
 import com.CoffeControl.backend.dto.SolicitationDto;
+import com.CoffeControl.backend.exception.GenericException;
 import com.CoffeControl.backend.form.SolicitationPostForm;
 import com.CoffeControl.backend.model.*;
 import com.CoffeControl.backend.model.compositeKey.SolicitationProductId;
@@ -12,6 +13,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -49,13 +53,13 @@ public class SolicitationServiceImpl implements SolicitationService {
 
     @Override
     public SolicitationDto register(SolicitationPostForm form) throws Exception {
-        User user= Optional.of(userRepository.findByName(form.getUsername()).get()).orElseThrow(() -> new Exception("user not found"));
+        User user= Optional.of(userRepository.findByName(form.getUsername()).get()).orElseThrow(() -> new GenericException("USER NOT FOUND!", "User with name " + form.getUsername() + " not found during the creation of solicitation!", HttpStatus.BAD_REQUEST));
         Solicitation solicitation = new Solicitation(form,user);
         solicitation= solicitationRepository.save(solicitation);
         for(int i =0; i < form.getProducts().length;i++) {
             Integer productId=form.getProducts()[i].getProductId();
             Integer requiredAmount=form.getProducts()[i].getRequiredAmount();
-            Product product =productRepository.findById(productId).orElseThrow(() -> new Exception("product id invalid"));
+            Product product =productRepository.findById(productId).orElseThrow(() -> new GenericException("PRODUCT NOT FOUND!", "Product with id " + productId + " not found during the creation of solicitation!", HttpStatus.BAD_REQUEST));
             SolicitationProductId solicitationProductId = new SolicitationProductId(productId,solicitation.getId());
             SolicitationProduct solicitationProduct=new SolicitationProduct(solicitationProductId,requiredAmount);
             solicitationProduct.setSolicitation(solicitation);
@@ -67,7 +71,7 @@ public class SolicitationServiceImpl implements SolicitationService {
 
     @Override
     public Boolean checkIfFinished(Integer solicitationId) throws Exception {
-       Solicitation solicitation= solicitationRepository.findById(solicitationId).orElseThrow(() -> new Exception("solicitation not found"));
+       Solicitation solicitation= solicitationRepository.findById(solicitationId).orElseThrow(() -> new GenericException("SOLICITATION NOT FOUND!", "Solicitaion with id " + solicitationId + " not found during the request!", HttpStatus.BAD_REQUEST));
        List<Contribution> contributions=solicitation.getContributions();
        Boolean finished=false;
        for(SolicitationProduct currentProduct : solicitation.getProducts()) {
@@ -104,7 +108,7 @@ public class SolicitationServiceImpl implements SolicitationService {
 
     @Override
     public SolicitationDetailedDto getSpecificSolicitation(Integer id) throws Exception {
-        Solicitation solicitation= solicitationRepository.findById(id).orElseThrow(() -> new Exception("no solicitation found with that id"));
+        Solicitation solicitation= solicitationRepository.findById(id).orElseThrow(() -> new GenericException("SOLICITATION NOT FOUND!", "Solicitation with id " + id + " not found during the request!", HttpStatus.BAD_REQUEST));
         return new SolicitationDetailedDto(solicitation);
     }
 

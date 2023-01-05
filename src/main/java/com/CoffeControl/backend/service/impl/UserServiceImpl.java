@@ -4,6 +4,7 @@ import com.CoffeControl.backend.dto.ContributionDto;
 import com.CoffeControl.backend.dto.UserDetailedDto;
 import com.CoffeControl.backend.dto.UserDto;
 import com.CoffeControl.backend.dto.UserFilterDto;
+import com.CoffeControl.backend.exception.GenericException;
 import com.CoffeControl.backend.form.ContributionPostForm;
 import com.CoffeControl.backend.form.ContributionProductForm;
 import com.CoffeControl.backend.form.UserFilterForm;
@@ -19,6 +20,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -60,7 +62,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDetailedDto getSpecificUser(Integer id) throws Exception {
-        User user= userRepository.findById(id).orElseThrow(() -> new Exception("user not found"));
+        User user= userRepository.findById(id).orElseThrow(() -> new GenericException("USER NOT FOUND!", "User with id " + id + " not found during the request of specific user", HttpStatus.BAD_REQUEST));
         return new UserDetailedDto(user);
     }
 
@@ -74,8 +76,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ContributionDto newContribution(Integer id, ContributionPostForm form) throws Exception {
-        Solicitation solicitation=solicitationRepository.findById(form.getSolicitationId()).orElseThrow(() -> new Exception("no solicitation found with that id"));
-        User user = userRepository.findById(id).orElseThrow(() -> new Exception("no user found with that id"));
+        Solicitation solicitation=solicitationRepository.findById(form.getSolicitationId()).orElseThrow(() -> new GenericException("SOLICITATION NOT FOUND!", "Solicitation with id " + form.getSolicitationId() + " not found during the creation of contribution!", HttpStatus.BAD_REQUEST));
+        User user = userRepository.findById(id).orElseThrow(() -> new GenericException("USER NOT FOUND!", "User with id " + id + " not found during the creation of contribution!", HttpStatus.BAD_REQUEST));
         Contribution contribution= new Contribution(user,solicitation);
         contribution=contributionRepository.save(contribution);
         for(ContributionProductForm current : form.getProducts()) {

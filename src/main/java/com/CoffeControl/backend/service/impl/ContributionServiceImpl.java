@@ -1,6 +1,7 @@
 package com.CoffeControl.backend.service.impl;
 
 import com.CoffeControl.backend.dto.ContributionDto;
+import com.CoffeControl.backend.exception.GenericException;
 import com.CoffeControl.backend.model.*;
 import com.CoffeControl.backend.repository.ContributionProductRepository;
 import com.CoffeControl.backend.repository.ContributionRepository;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -41,10 +43,10 @@ public class ContributionServiceImpl implements ContributionService {
     @Override
     @Transactional
     public String delete(Integer id) throws Exception {
-        Contribution contribution=contributionRepository.findById(id).orElseThrow(() -> new Exception("contribution not found"));
-        Solicitation solicitation=solicitationRepository.findById(contribution.getSolicitation().getId()).orElseThrow(() -> new Exception("soliicitation not found"));
+
+        Contribution contribution=contributionRepository.findById(id).orElseThrow(() -> new GenericException("CONTRIBUTION NOT FOUND!", "Contribution with id " + id + " not found during the delete of one!", HttpStatus.BAD_REQUEST));
+        Solicitation solicitation=solicitationRepository.findById(contribution.getSolicitation().getId()).orElseThrow(() -> new GenericException("SOLICITATION NOT FOUND!", "Solicitation with id " + contribution.getSolicitation().getId() + " not found during the delete of contribution!", HttpStatus.BAD_REQUEST));
         solicitation.getContributions().removeIf(c -> Objects.equals(c.getId(), id));
-        List<ContributionProduct> previousProducts=contributionProductRepository.findByContributionId(contribution.getId());
         solicitationRepository.save(solicitation);
         solicitationService.checkIfFinished(solicitation.getId());
         contributionRepository.deleteById(id);

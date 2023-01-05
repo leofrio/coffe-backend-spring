@@ -3,6 +3,7 @@ package com.CoffeControl.backend.service.impl;
 import com.CoffeControl.backend.dto.StorageDetailedDto;
 import com.CoffeControl.backend.dto.StorageDto;
 import com.CoffeControl.backend.dto.StorageLessDetailedDto;
+import com.CoffeControl.backend.exception.GenericException;
 import com.CoffeControl.backend.form.ProductPostForm;
 import com.CoffeControl.backend.form.ProductUpdateForm;
 import com.CoffeControl.backend.form.StorageUpdateForm;
@@ -18,6 +19,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -50,7 +53,7 @@ public class StorageServiceImpl implements StorageService {
 
     @Override
     public StorageDto updateQuantity(Integer id, StorageUpdateQuantityForm form) throws Exception {
-        Storage storage=storageRepositoy.findById(id).orElseThrow(() -> new Exception("storage id not found"));
+        Storage storage=storageRepositoy.findById(id).orElseThrow(() -> new GenericException("STORAGE NOT FOUND!", "Storage with id " + id + " not found during the update of quantity in storage", HttpStatus.BAD_REQUEST));
         storage.setCurrentAmount(form.getQtd());
         storageRepositoy.save(storage);
         return new StorageDto(storage);
@@ -58,21 +61,21 @@ public class StorageServiceImpl implements StorageService {
 
     @Override
     public StorageDetailedDto getSpecificStorage(Integer id) throws Exception {
-        Storage storage=storageRepositoy.findById(id).orElseThrow(() -> new Exception("id doesnt represent storage"));
+        Storage storage=storageRepositoy.findById(id).orElseThrow(() -> new GenericException("STORAGE NOT FOUND!", "Storage with id " + id + " not found during the request of specific storage", HttpStatus.BAD_REQUEST));
         return new StorageDetailedDto(storage);
     }
 
     @Override
     public StorageDetailedDto getByProductId(Integer product_id) throws Exception {
         Optional<Storage> optionalStorage= Optional.of(storageRepositoy.findByProductId(product_id).get(0));
-        Storage storage =optionalStorage.orElseThrow(() ->  new Exception("no product found"));
+        Storage storage =optionalStorage.orElseThrow(() ->  new GenericException("PRODUCT NOT FOUND!", "Product with id " + product_id + " not found during the request of storage using id product", HttpStatus.BAD_REQUEST));
         return new StorageDetailedDto(storage);
     }
 
     @Override
     public StorageDetailedDto updateProduct(Integer id, ProductUpdateForm form) throws Exception{
-        Storage storage =storageRepositoy.findById(id).orElseThrow(() -> new  Exception("storage not found"));
-        Product product =productRepository.findById(storage.getProduct().getId()).orElseThrow(() -> new Exception("product not found"));
+        Storage storage =storageRepositoy.findById(id).orElseThrow(() -> new GenericException("STORAGE NOT FOUND!", "Storage with id " + id + " not found during the update of product", HttpStatus.BAD_REQUEST));
+        Product product =productRepository.findById(storage.getProduct().getId()).orElseThrow(() -> new GenericException("PRODUCT NOT FOUND!", "Product with id " + storage.getProduct().getId() + " not found during the update of product", HttpStatus.BAD_REQUEST));
         product.setName(form.getName() != null ? form.getName() :  product.getName());
         product.setDescription(form.getDescription() != null ? form.getDescription() :  product.getDescription());
         product.setEnabled(form.getEnabled() != null ? form.getEnabled() :  product.getEnabled());
@@ -84,17 +87,16 @@ public class StorageServiceImpl implements StorageService {
 
     @Override
     public StorageDto deleteStorage(Integer id) throws Exception {
-        Storage storage= storageRepositoy.findById(id).orElseThrow(() -> new Exception("no storage found"));
+        Storage storage= storageRepositoy.findById(id).orElseThrow(() -> new GenericException("STORAGE NOT FOUND!", "Storage with id " + id + " not found during the delete of one!", HttpStatus.BAD_REQUEST));
         storageRepositoy.deleteById(id);
         productRepository.deleteById(storage.getProduct().getId());
-
         return new StorageDto(storage);
     }
 
     @Override
     public StorageDetailedDto updateStorage(Integer id, StorageUpdateForm form) throws Exception {
-        Storage storage=storageRepositoy.findById(id).orElseThrow(() -> new Exception("storage not found"));
-        Product product =productRepository.findById(storage.getProduct().getId()).orElseThrow(() -> new Exception("product not found"));
+        Storage storage=storageRepositoy.findById(id).orElseThrow(() -> new GenericException("STORAGE NOT FOUND!", "Storage with id " + id + " not found during the update of one!", HttpStatus.BAD_REQUEST));
+        Product product =productRepository.findById(storage.getProduct().getId()).orElseThrow(() -> new GenericException("PRODUCT NOT FOUND!", "Product with id " + storage.getProduct().getId() + " not found during the update of storage!", HttpStatus.BAD_REQUEST));
         product.setName(form.getName() != null ? form.getName() :  product.getName());
         product.setDescription(form.getDescription() != null ? form.getDescription() :  product.getDescription());
         product.setEnabled(form.getEnabled() != null ? form.getEnabled() :  product.getEnabled());
