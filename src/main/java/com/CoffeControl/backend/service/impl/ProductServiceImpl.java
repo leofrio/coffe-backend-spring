@@ -17,7 +17,6 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -34,7 +33,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductDto update(Integer id, ProductUpdateForm form) throws Exception {
-        Product product = productRepository.findById(id).orElseThrow(() -> new GenericException("PRODUCT NOT FOUND!", "Product with id " + id + " not found during the update of one!", HttpStatus.BAD_REQUEST));
+        Product product = productRepository.findById(id).orElseThrow(() -> new GenericException("PRODUCT NOT FOUND!", "Product with id " + id + " not found during the update process!", HttpStatus.BAD_REQUEST));
         product.setName(form.getName() != null ? form.getName() :  product.getName());
         product.setDescription(form.getDescription() != null ? form.getDescription() :  product.getDescription());
         product.setEnabled(form.getEnabled() != null ? form.getEnabled() :  product.getEnabled());
@@ -60,7 +59,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductDto enable(Integer id) throws Exception {
-        Product product = productRepository.findById(id).orElseThrow(() -> new GenericException("PRODUCT NOT FOUND!", "Product with id " + id + " not found during the enable of one!", HttpStatus.BAD_REQUEST));
+        Product product = productRepository.findById(id).orElseThrow(() -> new GenericException("PRODUCT NOT FOUND!", "Product with id " + id + " not found during the enable process!", HttpStatus.BAD_REQUEST));
         product.setEnabled(true);
         productRepository.save(product);
         return new ProductDto(product);
@@ -68,7 +67,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductDto disable(Integer id) throws Exception {
-        Product product = productRepository.findById(id).orElseThrow(() -> new GenericException("PRODUCT NOT FOUND!", "Product with id " + id + " not found during the disable of one!", HttpStatus.BAD_REQUEST));
+        Product product = productRepository.findById(id).orElseThrow(() -> new GenericException("PRODUCT NOT FOUND!", "Product with id " + id + " not found during the disable process!", HttpStatus.BAD_REQUEST));
         product.setEnabled(false);
         productRepository.save(product);
         return new ProductDto(product);

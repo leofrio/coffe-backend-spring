@@ -6,10 +6,10 @@ import lombok.Getter;
 import lombok.Setter;
 
 public class SolicitationPostForm {
+    @Getter @Setter @NotNull @NotEmpty
+    private Integer userId;
     @Getter @Setter @NotEmpty @NotNull
     private String name;
-    @Getter @Setter @NotNull @NotEmpty
-    private String username;
     @Getter @Setter @NotNull @NotEmpty
     private SolicitationProductForm[] products;
 }

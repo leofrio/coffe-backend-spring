@@ -13,14 +13,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 @Service
 public class SolicitationServiceImpl implements SolicitationService {
@@ -53,7 +50,8 @@ public class SolicitationServiceImpl implements SolicitationService {
 
     @Override
     public SolicitationDto register(SolicitationPostForm form) throws Exception {
-        User user= Optional.of(userRepository.findByName(form.getUsername()).get()).orElseThrow(() -> new GenericException("USER NOT FOUND!", "User with name " + form.getUsername() + " not found during the creation of solicitation!", HttpStatus.BAD_REQUEST));
+        //User user= Optional.of(userRepository.findByName(form.getUsername()).get()).orElseThrow(() -> new GenericException("USER NOT FOUND!", "User with name " + form.getUsername() + " not found during the creation of solicitation!", HttpStatus.BAD_REQUEST));
+        User user=userRepository.findById(form.getUserId()).orElseThrow(() -> new GenericException("USER NOT FOUND!", "User with id " + form.getUserId() + " not found during the creation of solicitation!", HttpStatus.BAD_REQUEST));
         Solicitation solicitation = new Solicitation(form,user);
         solicitation= solicitationRepository.save(solicitation);
         for(int i =0; i < form.getProducts().length;i++) {
