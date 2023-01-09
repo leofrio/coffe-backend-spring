@@ -1,0 +1,19 @@
+version: "3.9"
+services:
+  postgres:
+    image: postgres
+    container_name: coffee-control-spring
+    environment:
+      POSTGRES_USER: leonardogaspar
+      POSTGRES_PASSWORD: mysecretpassword
+      PGDATA: /data/postgres
+    volumes:
+      - ./docker-bank/postgres:/data/postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - postgres
+    restart: unless-stopped
+networks:
+  postgres:
+    driver: bridge
